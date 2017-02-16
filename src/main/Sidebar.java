@@ -26,8 +26,8 @@ public class Sidebar extends JFrame
 		int screenWidth = ScreenProperties.getScreenWidth();
 		int screenHeight = ScreenProperties.getScreenHeight();
 
-		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), (int) (barWidth * 1.5), barHeight);
-		setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
+		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
+		setPreferredSize(new Dimension(barWidth, barHeight));
 		setAlwaysOnTop(true);
 
 		DecorateFrame();
@@ -44,22 +44,24 @@ public class Sidebar extends JFrame
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(new Color(0, 0, 0));
 		mainPanel.setOpaque(false);
-		mainPanel.setBounds(0, 0, (int) (barWidth * 1.5), barHeight);
+		mainPanel.setBounds(0, 0, barWidth, barHeight);
 		mainPanel.setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
 		add(mainPanel);
 
-		CreateButton(Color.ORANGE, 0, "https://startpagina.windesheim.nl/default.aspx", "windesheim.png");
-		CreateButton(Color.BLUE, 100, "https://github.com/", "github.png");
-		CreateButton(Color.RED, 200, "https://trello.com/", "trello.png");
+		//CreateButton(Color.BLUE, 0, "https://github.com/", "github.png");
+		
+		ArcSelector selector = new ArcSelector();
+		add(selector);
 	}
 
 	void CreateButton(Color color, int height, String webUrl, String iconUrl)
 	{
+
 		File file = new File("assets/icons/" + iconUrl);
 		Image image;
-		try
+		if (file.exists())
 		{
-			if (file.exists())
+			try
 			{
 				image = ImageIO.read(file);
 				Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -68,10 +70,10 @@ public class Sidebar extends JFrame
 				JButton panel = new BarButton(color, height, webUrl, imageIcon);
 				mainPanel.add(panel);
 			}
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }
