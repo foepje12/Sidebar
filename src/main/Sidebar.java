@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 public class Sidebar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	int barWidth = 100;
-	int barHeight = 300;
+	int barWidth = 500;
+	int barHeight = 600;
 	JPanel mainPanel;
 
 	public Sidebar()
@@ -26,7 +26,8 @@ public class Sidebar extends JFrame
 		int screenWidth = ScreenProperties.getScreenWidth();
 		int screenHeight = ScreenProperties.getScreenHeight();
 
-		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
+		//setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
+		setBounds(500, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
 		setPreferredSize(new Dimension(barWidth, barHeight));
 		setAlwaysOnTop(true);
 
@@ -34,6 +35,7 @@ public class Sidebar extends JFrame
 
 		setUndecorated(true);
 		setBackground(new Color(1.0f, 1.0f, 1.0f, 0f));
+		
 		setVisible(true);
 		pack();
 	}
@@ -42,7 +44,7 @@ public class Sidebar extends JFrame
 	{
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
-		mainPanel.setBackground(new Color(0, 0, 0));
+		mainPanel.setBackground(new Color(0, 0, 0, 0));
 		mainPanel.setOpaque(false);
 		mainPanel.setBounds(0, 0, barWidth, barHeight);
 		mainPanel.setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
@@ -51,7 +53,7 @@ public class Sidebar extends JFrame
 		//CreateButton(Color.BLUE, 0, "https://github.com/", "github.png");
 		
 		ArcSelector selector = new ArcSelector();
-		add(selector);
+		mainPanel.add(selector);
 	}
 
 	void CreateButton(Color color, int height, String webUrl, String iconUrl)
