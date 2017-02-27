@@ -5,10 +5,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class ArcSelector extends JPanel
 {
@@ -19,8 +23,13 @@ public class ArcSelector extends JPanel
 	private int pieceWidth;
 	private Polygon[] shapes;
 	private Piece[] pieces;
+	Timer timer;
 	Color[] colors =
 	{ Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK };
+	Piece currentPiece;
+	int currentDegrees;
+	boolean isRotating;
+	int dominantColor = 6;
 
 	public ArcSelector()
 	{
@@ -31,32 +40,32 @@ public class ArcSelector extends JPanel
 		pieceWidth = ArcConstants.pieceWidth;
 		shapes = new Polygon[pieceAmount];
 		pieces = new Piece[pieceAmount];
-		
+
+		currentPiece = pieces[6];
+		currentDegrees = 0;
+		isRotating = false;
+
 		setLayout(new FlowLayout());
 		setBounds(0, 0, ArcConstants.radius * 2, ArcConstants.radius * 2);
 		setPreferredSize(new Dimension(ArcConstants.radius * 2, ArcConstants.radius * 2));
 		setBackground(new Color(0, 0, 0, 0));
 
-		this.addMouseMotionListener(new MouseMotionListener()
+		this.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mouseMoved(MouseEvent event)
+			public void mouseClicked(MouseEvent event)
 			{
-				for (int i = 0; i < pieceAmount; i++)
+				if (!isRotating)
 				{
-					pieces[i].setColor(Color.DARK_GRAY);
-
-					if (shapes[i].contains(event.getX(), event.getY()))
+					for (int i = 0; i < pieceAmount; i++)
 					{
-						pieces[i].setColor(colors[i]);
-						repaintThis();
+						if (shapes[i].contains(event.getX(), event.getY()))
+						{
+							RotateArc(1);
+							isRotating = true;
+						}
 					}
 				}
-			}
-
-			@Override
-			public void mouseDragged(MouseEvent e)
-			{
 			}
 		});
 
@@ -85,6 +94,7 @@ public class ArcSelector extends JPanel
 			{
 
 				degrees[i] = ((float) (360 / pieceAmount) / (precision - 1)) * i + (p * 360 / pieceAmount);
+				degrees[i] = degrees[i] + currentDegrees + 20;
 			}
 
 			for (int i = 0; i < degrees.length; i++)
@@ -123,6 +133,48 @@ public class ArcSelector extends JPanel
 
 	public void repaintThis()
 	{
+		for(int i = 0; i < pieceAmount; i++)
+		{
+			pieces[i].setColor(Color.DARK_GRAY);
+			
+			if(i == dominantColor)
+			{
+				pieces[i].setColor(colors[i]);
+			}
+		}
 		this.repaint();
+	}
+
+	public int from = 0;
+
+	public void RotateArc(int way)
+	{
+		int rotationAmount = 360 / pieceAmount;
+
+		timer = new Timer(50, new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent aEvent)
+			{
+				if (from < rotationAmount)
+				{
+					from += 1;
+					currentDegrees += 1;
+					if (currentDegrees == 360)
+					{
+						currentDegrees = 0;
+					}
+					repaintThis();
+				}
+				else
+				{
+					timer.stop();
+					from = 0;
+					isRotating = false;
+					dominantColor -= 1;
+				}
+			}
+		});
+		timer.start();
 	}
 }
