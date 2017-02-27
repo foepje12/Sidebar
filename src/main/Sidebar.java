@@ -15,19 +15,21 @@ import javax.swing.JPanel;
 public class Sidebar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	int barWidth = 500;
-	int barHeight = 600;
+	int barWidth = ArcConstants.radius;
+	int barHeight = barWidth * 2;
 	JPanel mainPanel;
-
+	private static JFrame jFrame;
+	
 	public Sidebar()
 	{
 		super();
 
 		int screenWidth = ScreenProperties.getScreenWidth();
 		int screenHeight = ScreenProperties.getScreenHeight();
+		jFrame = this;
 
-		//setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
-		setBounds(500, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
+		setBounds(screenWidth - (barWidth / 2), (screenHeight / 2) - (barHeight / 2) * 3, barWidth, barHeight);
+		//setBounds(500, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
 		setPreferredSize(new Dimension(barWidth, barHeight));
 		setAlwaysOnTop(true);
 
@@ -77,5 +79,10 @@ public class Sidebar extends JFrame
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static JFrame getJframe()
+	{
+		return jFrame;
 	}
 }

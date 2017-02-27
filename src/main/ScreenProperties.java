@@ -54,4 +54,5 @@ public class ScreenProperties
 
 		return screenSizes;
 	}
+	
 }

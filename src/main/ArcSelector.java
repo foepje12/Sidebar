@@ -2,63 +2,127 @@ package main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Polygon;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-public class ArcSelector extends JPanel {
+public class ArcSelector extends JPanel
+{
 	private static final long serialVersionUID = 1L;
+	private int pieceAmount;
+	private int radius;
+	private int precision;
+	private int pieceWidth;
+	private Polygon[] shapes;
+	private Piece[] pieces;
+	Color[] colors =
+	{ Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK };
 
-	public ArcSelector() {
+	public ArcSelector()
+	{
 		super();
+		radius = ArcConstants.radius;
+		pieceAmount = ArcConstants.pieceAmount;
+		precision = ArcConstants.precision;
+		pieceWidth = ArcConstants.pieceWidth;
+		shapes = new Polygon[pieceAmount];
+		pieces = new Piece[pieceAmount];
+		
+		setLayout(new FlowLayout());
+		setBounds(0, 0, ArcConstants.radius * 2, ArcConstants.radius * 2);
+		setPreferredSize(new Dimension(ArcConstants.radius * 2, ArcConstants.radius * 2));
+		setBackground(new Color(0, 0, 0, 0));
 
-		setBounds(200, 20, 400, ArcConstants.radius * 5);
-		this.setLayout(null);
-		this.setPreferredSize(new Dimension(400, ArcConstants.radius * 2));
-		this.setBackground(Color.gray);
+		this.addMouseMotionListener(new MouseMotionListener()
+		{
+			@Override
+			public void mouseMoved(MouseEvent event)
+			{
+				for (int i = 0; i < pieceAmount; i++)
+				{
+					pieces[i].setColor(Color.DARK_GRAY);
 
-		Color[] colors = { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK,
-				Color.BLACK };
+					if (shapes[i].contains(event.getX(), event.getY()))
+					{
+						pieces[i].setColor(colors[i]);
+						repaintThis();
+					}
+				}
+			}
 
-		for (int i = 0; i < ArcConstants.pieceAmount; i++) {
-			SelectorPiece piece = new SelectorPiece(i, colors[i]);
-			add(piece);
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+			}
+		});
+
+		for (int i = 0; i < pieceAmount; i++)
+		{
+			pieces[i] = new Piece(colors[i]);
 		}
 	}
-	
+
 	int i = 0;
 
 	@Override
-	public void paintComponent(Graphics g) {
-
-		
-		
-		Timer timer = new Timer(1, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent aEvent) {
-				while (true) 
-				{
-					Graphics2D g2d = (Graphics2D) g;
-					int w2 = getWidth() / 2;
-					int h2 = getHeight() / 2;
-					g2d.rotate(-Math.PI / 2 + i, w2, h2);
-					i++;
-					
-					if(i == 360)
-					{
-						i = 0;
-					}
-
-				}
-			}
-		});
-		timer.start();
-
+	public void paintComponent(Graphics g)
+	{
 		super.paintComponent(g);
+
+		for (int p = 0; p < ArcConstants.pieceAmount; p++)
+		{
+			shapes[p] = new Polygon();
+
+			g.setColor(pieces[p].getColor());
+
+			float[] degrees = new float[precision];
+
+			for (int i = 0; i < precision; i++)
+			{
+
+				degrees[i] = ((float) (360 / pieceAmount) / (precision - 1)) * i + (p * 360 / pieceAmount);
+			}
+
+			for (int i = 0; i < degrees.length; i++)
+			{
+				int x = (int) getSinCos(degrees[i], radius)[0];
+				int y = (int) getSinCos(degrees[i], radius)[1];
+
+				shapes[p].addPoint(x, y);
+			}
+
+			for (int i = degrees.length - 1; i >= 0; i--)
+			{
+
+				int x = (int) getSinCos(degrees[i], radius - pieceWidth)[0];
+				int y = (int) getSinCos(degrees[i], radius - pieceWidth)[1];
+
+				shapes[p].addPoint(x, y);
+			}
+
+			g.fillPolygon(shapes[p]);
+		}
 	}
 
+	double[] getSinCos(float degrees, int radius)
+	{
+		double radians = (Math.PI / 180) * degrees;
+
+		double sin = 150 + radius * Math.sin(radians);
+		double cos = 150 + radius * Math.cos(radians);
+
+		double[] sinCos =
+		{ sin, cos };
+
+		return sinCos;
+	}
+
+	public void repaintThis()
+	{
+		this.repaint();
+	}
 }

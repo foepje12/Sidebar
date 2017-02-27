@@ -41,8 +41,7 @@ public class BarButton extends JButton
 		setBackground(color);
 		setBorderPainted(false);
 		setFocusPainted(false);
-		
-		
+
 		JLabel label = new JLabel(iconUrl);
 		label.setOpaque(true);
 		label.setBounds(0, 0, barWidth, barWidth);
@@ -90,8 +89,8 @@ public class BarButton extends JButton
 						}
 					}
 				}
-				
-				if(model.isPressed())
+
+				if (model.isPressed())
 				{
 					OpenWebpage(webUrl);
 				}
@@ -151,7 +150,7 @@ public class BarButton extends JButton
 		setBounds(xFrom, buttonHeight, barWidth, barWidth);
 		setPreferredSize(new Dimension(barWidth, barWidth));
 	}
-	
+
 	public void OpenWebpage(String webUrl)
 	{
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
