@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -29,7 +28,11 @@ public class ArcSelector extends JPanel
 	Piece currentPiece;
 	int currentDegrees;
 	boolean isRotating;
-	int dominantColor = 6;
+	int dominantColor = 5;
+
+	int rotationAmount;
+	int from = 0;
+	int to;
 
 	public ArcSelector()
 	{
@@ -45,9 +48,12 @@ public class ArcSelector extends JPanel
 		currentDegrees = 0;
 		isRotating = false;
 
+		rotationAmount = 360 / pieceAmount;
+		to = rotationAmount;
+
 		setLayout(new FlowLayout());
-		setBounds(0, 0, ArcConstants.radius * 2, ArcConstants.radius * 2);
-		setPreferredSize(new Dimension(ArcConstants.radius * 2, ArcConstants.radius * 2));
+		setBounds(0, 0, ArcConstants.radius - 75, ArcConstants.radius * 2);
+		setPreferredSize(new Dimension(ArcConstants.radius - 75, ArcConstants.radius * 2));
 		setBackground(new Color(0, 0, 0, 0));
 
 		this.addMouseListener(new MouseAdapter()
@@ -61,7 +67,15 @@ public class ArcSelector extends JPanel
 					{
 						if (shapes[i].contains(event.getX(), event.getY()))
 						{
-							RotateArc(1);
+							if (i < dominantColor)
+							{
+								RotateArc(1);
+							}
+							else
+							{
+								RotateArc(-1);
+							}
+
 							isRotating = true;
 						}
 					}
@@ -82,42 +96,56 @@ public class ArcSelector extends JPanel
 	{
 		super.paintComponent(g);
 
-		for (int p = 0; p < ArcConstants.pieceAmount; p++)
+		for (int p = 0; p < pieceAmount; p++)
 		{
-			shapes[p] = new Polygon();
-
-			g.setColor(pieces[p].getColor());
-
-			float[] degrees = new float[precision];
-
-			for (int i = 0; i < precision; i++)
-			{
-
-				degrees[i] = ((float) (360 / pieceAmount) / (precision - 1)) * i + (p * 360 / pieceAmount);
-				degrees[i] = degrees[i] + currentDegrees + 20;
-			}
-
-			for (int i = 0; i < degrees.length; i++)
-			{
-				int x = (int) getSinCos(degrees[i], radius)[0];
-				int y = (int) getSinCos(degrees[i], radius)[1];
-
-				shapes[p].addPoint(x, y);
-			}
-
-			for (int i = degrees.length - 1; i >= 0; i--)
-			{
-
-				int x = (int) getSinCos(degrees[i], radius - pieceWidth)[0];
-				int y = (int) getSinCos(degrees[i], radius - pieceWidth)[1];
-
-				shapes[p].addPoint(x, y);
-			}
-
-			g.fillPolygon(shapes[p]);
+			DrawPiece(g, p);
 		}
 	}
 
+	void DrawPiece(Graphics g, int p)
+	{
+		shapes[p] = new Polygon();
+
+		g.setColor(pieces[p].getColor());
+
+		float[] degrees = new float[precision];
+
+		//Calculates all the degrees to be transated to Radians
+		for (int i = 0; i < precision; i++)
+		{
+
+			degrees[i] = ((float) (360 / pieceAmount) / (precision - 1)) * i + (p * 360 / pieceAmount);
+			degrees[i] = degrees[i] + currentDegrees + 20;
+		}
+
+		//Adds the outer points of a Piece
+		for (int i = 0; i < degrees.length; i++)
+		{
+			int x = (int) getSinCos(degrees[i], radius)[0];
+			int y = (int) getSinCos(degrees[i], radius)[1];
+
+			shapes[p].addPoint(x, y);
+		}
+
+		//Add the inner points of a Piece
+		for (int i = degrees.length - 1; i >= 0; i--)
+		{
+
+			int x = (int) getSinCos(degrees[i], radius - pieceWidth)[0];
+			int y = (int) getSinCos(degrees[i], radius - pieceWidth)[1];
+
+			shapes[p].addPoint(x, y);
+		}
+
+		g.fillPolygon(shapes[p]);
+	}
+
+	/**
+	 * Gets the sinus and cosinus for the circle
+	 * @param degrees
+	 * @param radius
+	 * @return double[] sinus and cosinus
+	 */
 	double[] getSinCos(float degrees, int radius)
 	{
 		double radians = (Math.PI / 180) * degrees;
@@ -131,13 +159,16 @@ public class ArcSelector extends JPanel
 		return sinCos;
 	}
 
+	/**
+	 * Repaints the paintComponent
+	 */
 	public void repaintThis()
 	{
-		for(int i = 0; i < pieceAmount; i++)
+		for (int i = 0; i < pieceAmount; i++)
 		{
 			pieces[i].setColor(Color.DARK_GRAY);
-			
-			if(i == dominantColor)
+
+			if (i == dominantColor)
 			{
 				pieces[i].setColor(colors[i]);
 			}
@@ -145,36 +176,82 @@ public class ArcSelector extends JPanel
 		this.repaint();
 	}
 
-	public int from = 0;
-
+	/**
+	 * Animate the Arc rotation
+	 * @param way
+	 */
 	public void RotateArc(int way)
 	{
-		int rotationAmount = 360 / pieceAmount;
 
-		timer = new Timer(50, new ActionListener()
+		timer = new Timer(5, new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent aEvent)
 			{
-				if (from < rotationAmount)
+				if (way < 0)
 				{
-					from += 1;
-					currentDegrees += 1;
-					if (currentDegrees == 360)
+					if (from < rotationAmount)
 					{
-						currentDegrees = 0;
+						from += 1;
+						currentDegrees += 1;
+						if (currentDegrees == 360)
+						{
+							currentDegrees = 0;
+						}
+						repaintThis();
 					}
-					repaintThis();
+					else
+					{
+						timer.stop();
+						from = 0;
+						isRotating = false;
+
+						dominantColor -= 1;
+
+						CheckCurrentColor();
+
+						repaintThis();
+					}
 				}
 				else
 				{
-					timer.stop();
-					from = 0;
-					isRotating = false;
-					dominantColor -= 1;
+					if (to > 0)
+					{
+						to -= 1;
+						currentDegrees -= 1;
+						if (currentDegrees < 0)
+						{
+							currentDegrees = 360;
+						}
+						repaintThis();
+					}
+					else
+					{
+						timer.stop();
+						to = rotationAmount;
+						isRotating = false;
+
+						dominantColor += 1;
+
+						CheckCurrentColor();
+
+						repaintThis();
+					}
 				}
 			}
 		});
 		timer.start();
+	}
+
+	void CheckCurrentColor()
+	{
+		if (dominantColor < 0)
+		{
+			dominantColor = pieceAmount - 1;
+		}
+		if (dominantColor == pieceAmount)
+		{
+			dominantColor = 0;
+		}
 	}
 }
