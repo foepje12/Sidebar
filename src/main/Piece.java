@@ -1,18 +1,16 @@
 package main;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 public class Piece
 {
 	private Color color;
 	public String[] webUrls;
-	
 
 	public Piece(Color color)
 	{
 		this.color = color;
-		
+
 	}
 
 	public Color getColor()

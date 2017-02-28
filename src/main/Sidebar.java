@@ -31,15 +31,14 @@ public class Sidebar extends JFrame
 		screenHeight = ScreenProperties.getScreenHeight();
 		jFrame = this;
 
-		//Create the barButtons
+		// Create the barButtons
 		barWidth = 100;
 		barHeight = 300;
-		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), (int) (barWidth * 1.5), barHeight);
-		setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
+		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
+		setPreferredSize(new Dimension(barWidth, barHeight));
 		boxType = "BarButtons";
 		DecorateFrame();
-		
-		
+
 		setAlwaysOnTop(true);
 		setUndecorated(true);
 		setBackground(new Color(1.0f, 1.0f, 1.0f, 0f));
@@ -54,8 +53,8 @@ public class Sidebar extends JFrame
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(new Color(0, 0, 0, 0));
 		mainPanel.setOpaque(false);
-		mainPanel.setBounds(0, 0, (int) (barWidth * 1.5), barHeight);
-		mainPanel.setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
+		mainPanel.setBounds(0, 0, barWidth, barHeight);
+		mainPanel.setPreferredSize(new Dimension(barWidth, barHeight));
 		add(mainPanel);
 
 		switch (boxType)
@@ -69,13 +68,17 @@ public class Sidebar extends JFrame
 			CreateButton(Color.BLUE, 100, "https://github.com/", "github.png");
 			CreateButton(Color.RED, 200, "https://trello.com/", "trello.png");
 			break;
+		case "SettingsPanel":
+			SettingsPanel settingsPanel = new SettingsPanel();
+			mainPanel.add(settingsPanel);
+			break;
 		}
-
 	}
-	
+
 	void EmptyFrame()
 	{
-		mainPanel = null;
+		mainPanel.removeAll();
+		pack();
 	}
 
 	void CreateButton(Color color, int height, String webUrl, String iconUrl)
@@ -102,26 +105,42 @@ public class Sidebar extends JFrame
 
 	public static void SwitchToArcSelector()
 	{
-		barWidth = ArcConstants.radius;
+		((Sidebar) jFrame).EmptyFrame();
+		barWidth = Constants.arcRadius;
 		barHeight = barWidth * 2;
-		jFrame.setBounds(screenWidth - (barWidth / 2), (screenHeight / 2) - (barHeight / 2) * 3, barWidth, barHeight);
-		jFrame.setPreferredSize(new Dimension(barWidth, barHeight));
+		jFrame.setBounds(screenWidth - (barWidth / 2), (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2,
+				barHeight);
+		jFrame.setPreferredSize(new Dimension(barWidth / 2, barHeight));
 
 		boxType = "ArcSelector";
-		((Sidebar) jFrame).EmptyFrame();
 		((Sidebar) jFrame).DecorateFrame();
 		jFrame.pack();
 	}
 
 	public static void SwitchToBarButtons()
 	{
+		((Sidebar) jFrame).EmptyFrame();
 		barWidth = 100;
 		barHeight = 300;
-		jFrame.setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), (int) (barWidth * 1.5),
-				barHeight);
-		jFrame.setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
+		jFrame.setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
+		jFrame.setPreferredSize(new Dimension(barWidth, barHeight));
 
 		boxType = "BarButtons";
+		((Sidebar) jFrame).DecorateFrame();
+		jFrame.pack();
+	}
+
+	public static void SwitchToSettingsPanel()
+	{
+		((Sidebar) jFrame).EmptyFrame();
+		barWidth = Constants.settingsWidth;
+		barHeight = Constants.settingsHeight;
+		jFrame.setBounds(screenWidth - barWidth , (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2,
+				barHeight);
+		jFrame.setPreferredSize(new Dimension(barWidth, barHeight));
+
+		boxType = "SettingsPanel";
+		((Sidebar) jFrame).DecorateFrame();
 		jFrame.pack();
 	}
 

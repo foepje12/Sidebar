@@ -35,8 +35,6 @@ public class BarButton extends JPanel
 	public BarButton(Color color, int height, String webUrl, ImageIcon iconUrl)
 	{
 		super();
-		
-		
 
 		buttonHeight = height;
 		this.webUrl = webUrl;
@@ -102,11 +100,9 @@ public class BarButton extends JPanel
 
 				if (SwingUtilities.isRightMouseButton(event))
 				{
-					System.out.println("test");
 					Sidebar.SwitchToArcSelector();
 				}
 			}
-
 		});
 	}
 

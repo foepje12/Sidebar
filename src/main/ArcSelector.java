@@ -15,6 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class ArcSelector extends JPanel
@@ -41,10 +42,10 @@ public class ArcSelector extends JPanel
 	public ArcSelector()
 	{
 		super();
-		radius = ArcConstants.radius;
-		pieceAmount = ArcConstants.pieceAmount;
-		precision = ArcConstants.precision;
-		pieceWidth = ArcConstants.pieceWidth;
+		radius = Constants.arcRadius;
+		pieceAmount = Constants.arcPieceAmount;
+		precision = Constants.arcPrecision;
+		pieceWidth = Constants.arcPieceWidth;
 		shapes = new Polygon[pieceAmount];
 		pieces = new Piece[pieceAmount];
 
@@ -56,8 +57,8 @@ public class ArcSelector extends JPanel
 		to = rotationAmount;
 
 		setLayout(new FlowLayout());
-		setBounds(0, 0, ArcConstants.radius - 75, ArcConstants.radius * 2);
-		setPreferredSize(new Dimension(ArcConstants.radius - 75, ArcConstants.radius * 2));
+		setBounds(0, 0, radius - 75, radius * 2);
+		setPreferredSize(new Dimension(radius - 75, radius * 2));
 		setBackground(new Color(0, 0, 0, 0));
 
 		this.addMouseWheelListener(new MouseWheelListener()
@@ -92,13 +93,27 @@ public class ArcSelector extends JPanel
 			@Override
 			public void mouseClicked(MouseEvent event)
 			{
-				for (int i = 0; i < pieceAmount; i++)
+				if (SwingUtilities.isLeftMouseButton(event))
 				{
-					if (shapes[i].contains(event.getX(), event.getY()))
+					for (int i = 0; i < pieceAmount; i++)
 					{
+						if (shapes[i].contains(event.getX(), event.getY()))
+						{
 
+						}
 					}
 				}
+
+				if (SwingUtilities.isRightMouseButton(event))
+				{
+					Sidebar.SwitchToBarButtons();
+				}
+
+				if (SwingUtilities.isMiddleMouseButton(event))
+				{
+					Sidebar.SwitchToSettingsPanel();
+				}
+
 			}
 		});
 
@@ -122,7 +137,7 @@ public class ArcSelector extends JPanel
 		{
 			DrawPiece(g2d, p);
 		}
-		
+
 		g2d.dispose();
 	}
 
@@ -196,9 +211,10 @@ public class ArcSelector extends JPanel
 			if (i == dominantColor)
 			{
 				pieces[i].setColor(colors[i]);
+				this.repaint();
 			}
 		}
-		this.repaint();
+
 	}
 
 	/**
