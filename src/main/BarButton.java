@@ -5,96 +5,108 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 
-import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-public class BarButton extends JButton
+public class BarButton extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	int barWidth = 100;
-	int buttonHeight = 0;
+	private int barWidth = 100;
+	private int buttonHeight = 0;
 
-	public int xFrom = 80;
-	public int xTo = 10;
-	public int baseValue = 80;
-	public boolean isAnimating = false;
-	public boolean isExtended = false;
+	private int xFrom = 80;
+	private int xTo = 10;
+	private int baseValue = 80;
+	private boolean isAnimating = false;
+	private boolean isExtended = false;
+
+	private String webUrl;
 
 	Timer timer;
 
 	public BarButton(Color color, int height, String webUrl, ImageIcon iconUrl)
 	{
 		super();
+		
+		
+
 		buttonHeight = height;
+		this.webUrl = webUrl;
 		setLayout(null);
 		setBounds(xFrom, height, barWidth, barWidth);
 		setPreferredSize(new Dimension(barWidth, barWidth));
 		setMinimumSize(new Dimension(barWidth, barWidth));
 		setBackground(color);
-		setBorderPainted(false);
-		setFocusPainted(false);
 
 		JLabel label = new JLabel(iconUrl);
 		label.setOpaque(true);
 		label.setBounds(0, 0, barWidth, barWidth);
 		add(label);
 
-		this.getModel().addChangeListener(new ChangeListener()
+		this.addMouseListener(new MouseAdapter()
 		{
 
 			@Override
-			public void stateChanged(ChangeEvent event)
+			public void mouseEntered(MouseEvent event)
 			{
-				ButtonModel model = (ButtonModel) event.getSource();
-
-				if (model.isRollover())
+				if (!isExtended)
 				{
-					if (!isExtended)
+					if (!isAnimating)
 					{
-						if (!isAnimating)
-						{
-							StartOutAnimation();
-							isAnimating = true;
-						}
-						else
-						{
-							timer.stop();
-							StartOutAnimation();
-							isAnimating = true;
-						}
+						StartOutAnimation();
+						isAnimating = true;
+					}
+					else
+					{
+						timer.stop();
+						StartOutAnimation();
+						isAnimating = true;
 					}
 				}
-				else
+			}
+
+			@Override
+			public void mouseExited(MouseEvent event)
+			{
+				if (isExtended)
 				{
-					if (isExtended)
+					if (!isAnimating)
 					{
-						if (!isAnimating)
-						{
-							StartInAnimation();
-							isAnimating = true;
-						}
-						else
-						{
-							timer.stop();
-							StartInAnimation();
-							isAnimating = true;
-						}
+						StartInAnimation();
+						isAnimating = true;
+					}
+					else
+					{
+						timer.stop();
+						StartInAnimation();
+						isAnimating = true;
 					}
 				}
+			}
 
-				if (model.isPressed())
+			@Override
+			public void mouseClicked(MouseEvent event)
+			{
+				if (SwingUtilities.isLeftMouseButton(event))
 				{
 					OpenWebpage(webUrl);
 				}
+
+				if (SwingUtilities.isRightMouseButton(event))
+				{
+					System.out.println("test");
+					Sidebar.SwitchToArcSelector();
+				}
 			}
+
 		});
 	}
 

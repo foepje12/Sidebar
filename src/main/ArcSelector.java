@@ -4,11 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -56,10 +60,10 @@ public class ArcSelector extends JPanel
 		setPreferredSize(new Dimension(ArcConstants.radius - 75, ArcConstants.radius * 2));
 		setBackground(new Color(0, 0, 0, 0));
 
-		this.addMouseListener(new MouseAdapter()
+		this.addMouseWheelListener(new MouseWheelListener()
 		{
 			@Override
-			public void mouseClicked(MouseEvent event)
+			public void mouseWheelMoved(MouseWheelEvent event)
 			{
 				if (!isRotating)
 				{
@@ -67,17 +71,32 @@ public class ArcSelector extends JPanel
 					{
 						if (shapes[i].contains(event.getX(), event.getY()))
 						{
-							if (i < dominantColor)
+							if (event.getWheelRotation() < 0)
 							{
 								RotateArc(1);
 							}
-							else
+							else if (event.getWheelRotation() > 0)
 							{
 								RotateArc(-1);
 							}
 
 							isRotating = true;
 						}
+					}
+				}
+			}
+		});
+
+		this.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent event)
+			{
+				for (int i = 0; i < pieceAmount; i++)
+				{
+					if (shapes[i].contains(event.getX(), event.getY()))
+					{
+
 					}
 				}
 			}
@@ -95,11 +114,16 @@ public class ArcSelector extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
+
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		for (int p = 0; p < pieceAmount; p++)
 		{
-			DrawPiece(g, p);
+			DrawPiece(g2d, p);
 		}
+		
+		g2d.dispose();
 	}
 
 	void DrawPiece(Graphics g, int p)
@@ -110,7 +134,7 @@ public class ArcSelector extends JPanel
 
 		float[] degrees = new float[precision];
 
-		//Calculates all the degrees to be transated to Radians
+		// Calculates all the degrees to be transated to Radians
 		for (int i = 0; i < precision; i++)
 		{
 
@@ -118,7 +142,7 @@ public class ArcSelector extends JPanel
 			degrees[i] = degrees[i] + currentDegrees + 20;
 		}
 
-		//Adds the outer points of a Piece
+		// Adds the outer points of a Piece
 		for (int i = 0; i < degrees.length; i++)
 		{
 			int x = (int) getSinCos(degrees[i], radius)[0];
@@ -127,7 +151,7 @@ public class ArcSelector extends JPanel
 			shapes[p].addPoint(x, y);
 		}
 
-		//Add the inner points of a Piece
+		// Add the inner points of a Piece
 		for (int i = degrees.length - 1; i >= 0; i--)
 		{
 
@@ -142,6 +166,7 @@ public class ArcSelector extends JPanel
 
 	/**
 	 * Gets the sinus and cosinus for the circle
+	 * 
 	 * @param degrees
 	 * @param radius
 	 * @return double[] sinus and cosinus
@@ -178,6 +203,7 @@ public class ArcSelector extends JPanel
 
 	/**
 	 * Animate the Arc rotation
+	 * 
 	 * @param way
 	 */
 	public void RotateArc(int way)

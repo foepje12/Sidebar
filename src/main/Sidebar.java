@@ -8,36 +8,42 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Sidebar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	int barWidth = ArcConstants.radius;
-	int barHeight = barWidth * 2;
-	JPanel mainPanel;
+	static int barWidth;
+	static int barHeight;
+	static int screenWidth;
+	static int screenHeight;
+	static String boxType;
+
 	private static JFrame jFrame;
-	
+	JPanel mainPanel;
+
 	public Sidebar()
 	{
 		super();
 
-		int screenWidth = ScreenProperties.getScreenWidth();
-		int screenHeight = ScreenProperties.getScreenHeight();
+		screenWidth = ScreenProperties.getScreenWidth();
+		screenHeight = ScreenProperties.getScreenHeight();
 		jFrame = this;
 
-		setBounds(screenWidth - (barWidth / 2), (screenHeight / 2) - (barHeight / 2) * 3, barWidth, barHeight);
-		//setBounds(500, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
-		setPreferredSize(new Dimension(barWidth, barHeight));
-		setAlwaysOnTop(true);
-
+		//Create the barButtons
+		barWidth = 100;
+		barHeight = 300;
+		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), (int) (barWidth * 1.5), barHeight);
+		setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
+		boxType = "BarButtons";
 		DecorateFrame();
-
+		
+		
+		setAlwaysOnTop(true);
 		setUndecorated(true);
 		setBackground(new Color(1.0f, 1.0f, 1.0f, 0f));
-		
+
 		setVisible(true);
 		pack();
 	}
@@ -48,19 +54,32 @@ public class Sidebar extends JFrame
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(new Color(0, 0, 0, 0));
 		mainPanel.setOpaque(false);
-		mainPanel.setBounds(0, 0, barWidth, barHeight);
+		mainPanel.setBounds(0, 0, (int) (barWidth * 1.5), barHeight);
 		mainPanel.setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
 		add(mainPanel);
 
-		//CreateButton(Color.BLUE, 0, "https://github.com/", "github.png");
-		
-		ArcSelector selector = new ArcSelector();
-		mainPanel.add(selector);
+		switch (boxType)
+		{
+		case "ArcSelector":
+			ArcSelector selector = new ArcSelector();
+			mainPanel.add(selector);
+			break;
+		case "BarButtons":
+			CreateButton(Color.ORANGE, 0, "https://startpagina.windesheim.nl/default.aspx", "windesheim.jpg");
+			CreateButton(Color.BLUE, 100, "https://github.com/", "github.png");
+			CreateButton(Color.RED, 200, "https://trello.com/", "trello.png");
+			break;
+		}
+
+	}
+	
+	void EmptyFrame()
+	{
+		mainPanel = null;
 	}
 
 	void CreateButton(Color color, int height, String webUrl, String iconUrl)
 	{
-
 		File file = new File("assets/icons/" + iconUrl);
 		Image image;
 		if (file.exists())
@@ -71,7 +90,7 @@ public class Sidebar extends JFrame
 				Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon imageIcon = new ImageIcon(dimg);
 
-				JButton panel = new BarButton(color, height, webUrl, imageIcon);
+				JPanel panel = new BarButton(color, height, webUrl, imageIcon);
 				mainPanel.add(panel);
 			}
 			catch (IOException e)
@@ -80,7 +99,32 @@ public class Sidebar extends JFrame
 			}
 		}
 	}
-	
+
+	public static void SwitchToArcSelector()
+	{
+		barWidth = ArcConstants.radius;
+		barHeight = barWidth * 2;
+		jFrame.setBounds(screenWidth - (barWidth / 2), (screenHeight / 2) - (barHeight / 2) * 3, barWidth, barHeight);
+		jFrame.setPreferredSize(new Dimension(barWidth, barHeight));
+
+		boxType = "ArcSelector";
+		((Sidebar) jFrame).EmptyFrame();
+		((Sidebar) jFrame).DecorateFrame();
+		jFrame.pack();
+	}
+
+	public static void SwitchToBarButtons()
+	{
+		barWidth = 100;
+		barHeight = 300;
+		jFrame.setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), (int) (barWidth * 1.5),
+				barHeight);
+		jFrame.setPreferredSize(new Dimension((int) (barWidth * 1.5), barHeight));
+
+		boxType = "BarButtons";
+		jFrame.pack();
+	}
+
 	public static JFrame getJframe()
 	{
 		return jFrame;
