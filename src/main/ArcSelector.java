@@ -28,8 +28,6 @@ public class ArcSelector extends JPanel
 	private Polygon[] shapes;
 	private Piece[] pieces;
 	Timer timer;
-	Color[] colors =
-	{ Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK };
 	Piece currentPiece;
 	int currentDegrees;
 	boolean isRotating;
@@ -119,7 +117,7 @@ public class ArcSelector extends JPanel
 
 		for (int i = 0; i < pieceAmount; i++)
 		{
-			pieces[i] = new Piece(colors[i]);
+			pieces[i] = new Piece(Color.GREEN);
 		}
 	}
 
@@ -129,6 +127,7 @@ public class ArcSelector extends JPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		g.clearRect(0, 0, radius - 75, radius * 2);
 		Graphics2D g2d = (Graphics2D) g;
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -144,7 +143,6 @@ public class ArcSelector extends JPanel
 	void DrawPiece(Graphics g, int p)
 	{
 		shapes[p] = new Polygon();
-
 		g.setColor(pieces[p].getColor());
 
 		float[] degrees = new float[precision];
@@ -210,8 +208,9 @@ public class ArcSelector extends JPanel
 
 			if (i == dominantColor)
 			{
-				pieces[i].setColor(colors[i]);
+				pieces[i].setColor(Color.GREEN);
 				this.repaint();
+				this.revalidate();
 			}
 		}
 

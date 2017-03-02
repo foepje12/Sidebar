@@ -4,3 +4,6 @@ assets/
 .classpath
 .settings/org.eclipse.jdt.core.prefs
 .metadata/
+/target/
+.settings/
+files/

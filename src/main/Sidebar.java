@@ -135,8 +135,7 @@ public class Sidebar extends JFrame
 		((Sidebar) jFrame).EmptyFrame();
 		barWidth = Constants.settingsWidth;
 		barHeight = Constants.settingsHeight;
-		jFrame.setBounds(screenWidth - barWidth , (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2,
-				barHeight);
+		jFrame.setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2, barHeight);
 		jFrame.setPreferredSize(new Dimension(barWidth, barHeight));
 
 		boxType = "SettingsPanel";

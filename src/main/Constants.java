@@ -12,4 +12,8 @@ public class Constants {
 	//SettingConstants
 	public static int settingsWidth = 300;
 	public static int settingsHeight = 300;
+	public static int settingsMainWidth = 300;
+	public static int settingsMainHeight = 300;
+	
+	public static int maxBarAmounts = 5;
 }
