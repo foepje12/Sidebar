@@ -16,4 +16,8 @@ public class Constants {
 	public static int settingsMainHeight = 300;
 	
 	public static int maxBarAmounts = 5;
+	
+	public static String filesPath = "files";
+	public static String categoriesFile = "categories.json";
+	public static String profileFile = "profiles.json";
 }
