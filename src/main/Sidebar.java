@@ -42,7 +42,6 @@ public class Sidebar extends JFrame
 		setAlwaysOnTop(true);
 		setUndecorated(true);
 		setBackground(new Color(1.0f, 1.0f, 1.0f, 0f));
-
 		setVisible(true);
 		pack();
 	}

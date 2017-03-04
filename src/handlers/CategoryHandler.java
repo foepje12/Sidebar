@@ -25,28 +25,27 @@ public class CategoryHandler
 		barItemMap = new HashMap<String, BarItem>();
 	}
 
-	public static void Test()
+	public static Set<String> getCategoryNames()
 	{
-		Categories cats = getCategories();
-
-		Set<String> keySet = cats.categoryMap.get("Favourites").barItemMap.keySet();
-
-		for (String set : keySet)
-		{
-			System.out.println(set);
-		}
+		Categories catgs = getCategories();
+		Set<String> keySet = catgs.categoryMap.keySet();
+		return keySet;
 	}
 
 	public static Categories getCategories()
 	{
+		File file = new File(Constants.filesPath + "/" + Constants.categoriesFile);
 		try
 		{
 			Gson gson = new Gson();
-			FileReader reader = new FileReader(Constants.filesPath + "/" + Constants.categoriesFile);
+			if (file.exists())
+			{
+				FileReader reader = new FileReader(file);
 
-			Categories catgs = gson.fromJson(reader, Categories.class);
+				Categories catgs = gson.fromJson(reader, Categories.class);
 
-			return catgs;
+				return catgs;
+			}
 		}
 		catch (JsonSyntaxException | JsonIOException | FileNotFoundException e)
 		{
@@ -54,7 +53,7 @@ public class CategoryHandler
 		}
 		return null;
 	}
-	
+
 	public static void addCategory(String name)
 	{
 		Categories categories = getCategories();
@@ -63,7 +62,7 @@ public class CategoryHandler
 		category.barItemMap = new HashMap<String, BarItem>();
 		categories.categoryMap.put(name, category);
 	}
-	
+
 	public static void addBarItem(String categoryName, BarItem item)
 	{
 		Categories categories = getCategories();
@@ -75,7 +74,7 @@ public class CategoryHandler
 	{
 		Gson gson = new Gson();
 
-		Categories categories =  getCategories();
+		Categories categories = getCategories();
 
 		BarItem barItem = new BarItem();
 		barItem.name = "Github";

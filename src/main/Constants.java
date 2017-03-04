@@ -10,10 +10,12 @@ public class Constants {
 	public static int arcPieceWidth = 40;
 	
 	//SettingConstants
-	public static int settingsWidth = 300;
+	public static int settingsWidth = 400;
 	public static int settingsHeight = 300;
 	public static int settingsMainWidth = 300;
 	public static int settingsMainHeight = 300;
+	public static int leftScrollPaneWidth = settingsWidth - settingsMainWidth;
+	public static int LeftScrollPaneHeight = settingsHeight;
 	
 	public static int maxBarAmounts = 5;
 	
