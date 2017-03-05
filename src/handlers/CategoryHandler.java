@@ -16,8 +16,8 @@ import main.Constants;
 
 public class CategoryHandler
 {
-	private static final Map<String, Category> categoryMap;
-	private static final Map<String, BarItem> barItemMap;
+	private static Map<String, Category> categoryMap;
+	private static Map<String, BarItem> barItemMap;
 
 	static
 	{
@@ -30,6 +30,22 @@ public class CategoryHandler
 		Categories catgs = getCategories();
 		Set<String> keySet = catgs.categoryMap.keySet();
 		return keySet;
+	}
+	
+	public static Set<String> getBarItemNames(String categoryName)
+	{
+		Categories catgs = getCategories();		
+		Set<String> keySet = catgs.categoryMap.get(categoryName).barItemMap.keySet();
+		return keySet;
+	}
+
+	public static void changeCategoryName(String oldName, String newName)
+	{
+		Categories catgs = getCategories();
+		catgs.categoryMap.put(newName, catgs.categoryMap.get(oldName));
+		catgs.categoryMap.remove(oldName);
+		categoryMap = catgs.categoryMap;		
+		WriteToFile();
 	}
 
 	public static Categories getCategories()
@@ -58,7 +74,6 @@ public class CategoryHandler
 	{
 		Categories categories = getCategories();
 		Category category = new Category();
-		category.name = name;
 		category.barItemMap = new HashMap<String, BarItem>();
 		categories.categoryMap.put(name, category);
 	}
@@ -75,25 +90,28 @@ public class CategoryHandler
 		Gson gson = new Gson();
 
 		Categories categories = getCategories();
-
-		BarItem barItem = new BarItem();
-		barItem.name = "Github";
-		barItem.webUrl = "https://github.com/";
-		barItem.iconPath = "assets/icons/github.png";
-		barItemMap.put(barItem.name, barItem);
-
-		barItem.name = "Trello";
-		barItem.webUrl = "https://trello.com/";
-		barItem.iconPath = "assets/icons/trello.png";
-		barItemMap.put(barItem.name, barItem);
-
-		Category category = new Category();
-		category.barItemMap = barItemMap;
-		category.name = "Favourites";
-
-		categoryMap.put("Favourites", category);
-
-		categories.categoryMap = categoryMap;
+		
+		if(!categoryMap.isEmpty())
+		{
+			categories.categoryMap = categoryMap;
+		}
+		
+		/*
+		 * BarItem barItem = new BarItem(); barItem.name = "Github";
+		 * barItem.webUrl = "https://github.com/"; barItem.iconPath =
+		 * "assets/icons/github.png"; barItemMap.put(barItem.name, barItem);
+		 * 
+		 * barItem.name = "Trello"; barItem.webUrl = "https://trello.com/";
+		 * barItem.iconPath = "assets/icons/trello.png";
+		 * barItemMap.put(barItem.name, barItem);
+		 * 
+		 * Category category = new Category(); category.barItemMap = barItemMap;
+		 * category.name = "Favourites";
+		 * 
+		 * categoryMap.put("Favourites", category);
+		 * 
+		 * categories.categoryMap = categoryMap;
+		 */
 
 		if (!(new File(Constants.filesPath).exists()))
 		{
@@ -121,7 +139,6 @@ class Categories
 
 class Category
 {
-	String name;
 	Map<String, BarItem> barItemMap;
 }
 

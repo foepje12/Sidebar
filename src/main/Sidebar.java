@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import settingsMenu.SettingsPanel;
+
 public class Sidebar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
@@ -145,5 +147,11 @@ public class Sidebar extends JFrame
 	public static JFrame getJframe()
 	{
 		return jFrame;
+	}
+	
+	public static void packJFrame()
+	{
+		jFrame.revalidate();
+		jFrame.pack();
 	}
 }
