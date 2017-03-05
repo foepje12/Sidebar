@@ -8,23 +8,15 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import handlers.CategoryHandler;
-import main.ClickListener;
 import main.Constants;
 import main.Sidebar;
 
@@ -32,9 +24,8 @@ public class SettingsPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	private JPanel mainPanel;
-
-	JPanel panelScrollPane;
+	public JPanel mainPanel;
+	public JPanel panelScrollPane;
 	private JScrollPane scrollPane;
 	public String currentCategoryName;
 
@@ -128,6 +119,10 @@ public class SettingsPanel extends JPanel
 
 			panel.add(label);
 		}
+
+		JLabel addNewCategoryLabel = new JLabel();
+
+		panel.add(addNewCategoryLabel);
 	}
 
 	private void addBarItemToScrollPane(JPanel panel, String categoryName)
@@ -136,74 +131,16 @@ public class SettingsPanel extends JPanel
 
 		for (String set : strings)
 		{
-			Label_BarItem label = new Label_BarItem(set, this);
+			Label_BarItem label = new Label_BarItem(set);
 			label.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 			panel.add(label);
 		}
-	}
-
-	void addCategoryOptions(String categoryName)
-	{
-
-		JTextField txtFavourites = new JTextField();
-		txtFavourites.setText("Favourites");
-		txtFavourites.setColumns(10);
-
-		JButton btnChangeName = new JButton("Change Name");
-		btnChangeName.getModel().addChangeListener(new ChangeListener()
-		{
-			public void stateChanged(ChangeEvent arg0)
-			{
-
-			}
-		});
-		btnChangeName.setBackground(Color.WHITE);
-
-		JButton btnChangeIcon = new JButton("Change Icon");
-		btnChangeIcon.getModel().addChangeListener(new ChangeListener()
-		{
-			public void stateChanged(ChangeEvent e)
-			{
-			}
-		});
-
-		JLabel lblIconPath = new JLabel("Icon Path");
-		GroupLayout gl_panel = new GroupLayout(mainPanel);
-		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(lblIconPath, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(txtFavourites, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnChangeIcon, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE)
-						.addComponent(btnChangeName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-								Short.MAX_VALUE))
-				.addContainerGap(42, Short.MAX_VALUE)));
-		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup().addContainerGap()
-						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtFavourites, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnChangeName))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnChangeIcon)
-								.addComponent(lblIconPath))
-						.addContainerGap(237, Short.MAX_VALUE)));
-		mainPanel.setLayout(gl_panel);
-
-		Sidebar.packJFrame();
-	}
-
-	void addBarItemOptions(String BarItemName)
-	{
-
 	}
 }
 
 class JTextFieldLimit extends PlainDocument
 {
+	private static final long serialVersionUID = 1L;
 	private int limit;
 
 	JTextFieldLimit(int limit)
