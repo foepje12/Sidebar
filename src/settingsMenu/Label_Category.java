@@ -13,7 +13,7 @@ import javax.swing.event.ChangeListener;
 
 import main.Sidebar;
 
-public class Label_Category extends BaseScrollPLabel
+public class Label_Category extends BaseScrollLabel
 {
 	private static final long serialVersionUID = 1L;
 	private SettingsPanel settingsPanel;
@@ -50,9 +50,13 @@ public class Label_Category extends BaseScrollPLabel
 		JButton btnChangeName = new JButton("Change Name");
 		btnChangeName.getModel().addChangeListener(new ChangeListener()
 		{
-			public void stateChanged(ChangeEvent arg0)
+			@Override
+			public void stateChanged(ChangeEvent event)
 			{
-
+				if(btnChangeName.getModel().isPressed())
+				{
+					
+				}
 			}
 		});
 		btnChangeName.setBackground(Color.WHITE);
@@ -60,8 +64,13 @@ public class Label_Category extends BaseScrollPLabel
 		JButton btnChangeIcon = new JButton("Change Icon");
 		btnChangeIcon.getModel().addChangeListener(new ChangeListener()
 		{
-			public void stateChanged(ChangeEvent e)
+			@Override
+			public void stateChanged(ChangeEvent event)
 			{
+				if(btnChangeName.getModel().isPressed())
+				{
+					
+				}
 			}
 		});
 

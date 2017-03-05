@@ -9,11 +9,16 @@ import javax.swing.JLabel;
 import main.ClickListener;
 import main.Constants;
 
-public class BaseScrollPLabel extends JLabel
+public class BaseScrollLabel extends JLabel
 {
 	private static final long serialVersionUID = 1L;
 
-	public BaseScrollPLabel(String text)
+	public BaseScrollLabel(String text, ClickListener handler)
+	{
+		super(text);
+	}
+	
+	public BaseScrollLabel(String text)
 	{
 		super(text);
 		setAlignmentY(JLabel.CENTER_ALIGNMENT);
@@ -21,7 +26,6 @@ public class BaseScrollPLabel extends JLabel
 		setMinimumSize(size);
 		setPreferredSize(size);
 		setMaximumSize(size);
-
 		setBackground(Color.WHITE);
 		setOpaque(true);
 

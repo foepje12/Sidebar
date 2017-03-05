@@ -17,6 +17,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import handlers.CategoryHandler;
+import main.ClickListener;
 import main.Constants;
 import main.Sidebar;
 
@@ -120,7 +121,14 @@ public class SettingsPanel extends JPanel
 			panel.add(label);
 		}
 
-		JLabel addNewCategoryLabel = new JLabel();
+		BaseScrollLabel addNewCategoryLabel = new BaseScrollLabel("Add Category", new ClickListener()
+		{
+			@Override
+			public void singleClick(MouseEvent e)
+			{
+				
+			}
+		});
 
 		panel.add(addNewCategoryLabel);
 	}

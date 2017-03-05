@@ -1,6 +1,6 @@
 package settingsMenu;
 
-public class Label_BarItem extends BaseScrollPLabel
+public class Label_BarItem extends BaseScrollLabel
 {
 	private static final long serialVersionUID = 1L;
 	private String barName;
