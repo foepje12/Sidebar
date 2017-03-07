@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
@@ -39,13 +40,24 @@ public class CategoryHandler
 		return keySet;
 	}
 
-	public static void changeCategoryName(String oldName, String newName)
+	public static void renameCategory(String oldName, String newName)
 	{
 		Categories catgs = getCategories();
 		catgs.categoryMap.put(newName, catgs.categoryMap.get(oldName));
 		catgs.categoryMap.remove(oldName);
 		categoryMap = catgs.categoryMap;
-		WriteToFile();
+		WriteCategoryToFile();
+	}
+
+	public static void renameBarItem(String catgName, String oldName, String newName)
+	{
+		Categories catgs = getCategories();
+		Category catg = catgs.categoryMap.get(catgName);
+
+		catg.barItemMap.put(newName, catg.barItemMap.get(oldName));
+		catg.barItemMap.remove(oldName);
+		barItemMap = catg.barItemMap;
+		WriteBarItemToFile(catgName);
 	}
 
 	public static Categories getCategories()
@@ -70,26 +82,29 @@ public class CategoryHandler
 		return null;
 	}
 
-	public static void addCategory(String name)
+	public static void addCategory()
 	{
 		Categories categories = getCategories();
 		Category category = new Category();
 		category.barItemMap = new HashMap<String, BarItem>();
-		categories.categoryMap.put(name, category);
+		categories.categoryMap.put("newCategory", category);
 		categoryMap = categories.categoryMap;
-		WriteToFile();
+		WriteCategoryToFile();
 	}
 
-	public static void addBarItem(String categoryName, BarItem item)
+	public static void addBarItem(String catgName)
 	{
 		Categories categories = getCategories();
-		categories.categoryMap.get(categoryName).barItemMap.put(item.name, item);
-		WriteToFile();
+		Category category = categories.categoryMap.get(catgName);
+		category.barItemMap.put("newBarItem", new BarItem());
+
+		barItemMap = category.barItemMap;
+		WriteBarItemToFile(catgName);
 	}
 
-	public static void WriteToFile()
+	public static void WriteCategoryToFile()
 	{
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		Categories categories = getCategories();
 
@@ -98,33 +113,40 @@ public class CategoryHandler
 			categories.categoryMap = categoryMap;
 		}
 
-		/*
-		 * BarItem barItem = new BarItem(); barItem.name = "Github";
-		 * barItem.webUrl = "https://github.com/"; barItem.iconPath =
-		 * "assets/icons/github.png"; barItemMap.put(barItem.name, barItem);
-		 * 
-		 * barItem.name = "Trello"; barItem.webUrl = "https://trello.com/";
-		 * barItem.iconPath = "assets/icons/trello.png";
-		 * barItemMap.put(barItem.name, barItem);
-		 * 
-		 * Category category = new Category(); category.barItemMap = barItemMap;
-		 * category.name = "Favourites";
-		 * 
-		 * categoryMap.put("Favourites", category);
-		 * 
-		 * categories.categoryMap = categoryMap;
-		 */
+		if (!(new File(Constants.filesPath).exists()))
+		{
+			new File(Constants.filesPath).mkdir();
+		}
+
+		WriteToFile(Constants.filesPath + "/" + Constants.categoriesFile, gson.toJson(categories));
+	}
+
+	public static void WriteBarItemToFile(String catgName)
+	{
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+		Categories categories = getCategories();
+
+		if (!barItemMap.isEmpty())
+		{
+			categories.categoryMap.get(catgName).barItemMap = barItemMap;
+		}
 
 		if (!(new File(Constants.filesPath).exists()))
 		{
 			new File(Constants.filesPath).mkdir();
 		}
 
+		WriteToFile(Constants.filesPath + "/" + Constants.categoriesFile, gson.toJson(categories));
+	}
+
+	public static void WriteToFile(String whereToWrite, String whatToWrite)
+	{
 		PrintWriter writer;
 		try
 		{
-			writer = new PrintWriter(Constants.filesPath + "/" + Constants.categoriesFile);
-			writer.write(gson.toJson(categories));
+			writer = new PrintWriter(whereToWrite);
+			writer.write(whatToWrite);
 			writer.close();
 		}
 		catch (FileNotFoundException e)

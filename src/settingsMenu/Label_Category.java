@@ -27,13 +27,13 @@ public class Label_Category extends BaseScrollLabel
 	{
 		if (isNew)
 		{
-			CategoryHandler.addCategory("newCategory");
+			CategoryHandler.addCategory();
 			settingsPanel.RefreshScrollPane("CATEGORY");
 		}
 		else
 		{
 			settingsPanel.currentCategoryName = catgName;
-			settingsPanel.SetOptionsPaneCategory(catgName);
+			settingsPanel.SetOptionsPanelCategory(catgName);
 		}
 	}
 

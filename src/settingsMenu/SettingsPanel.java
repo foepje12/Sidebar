@@ -105,20 +105,20 @@ public class SettingsPanel extends JPanel
 		panel.add(addNewCategoryLabel);
 	}
 
-	private void addBarItemToScrollPane(JPanel panel, String categoryName)
+	private void addBarItemToScrollPane(JPanel panel, String catgName)
 	{
-		Set<String> strings = CategoryHandler.getBarItemNames(categoryName);
+		Set<String> strings = CategoryHandler.getBarItemNames(catgName);
 
 		for (String set : strings)
 		{
-			Label_BarItem label = new Label_BarItem(set, this, true);
+			Label_BarItem label = new Label_BarItem(catgName, set, this);
 			label.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 			panel.add(label);
 		}
-		
-		JLabel addNewCategoryLabel = new Label_BarItem("Add BarItem", this, true);
+
+		JLabel addNewCategoryLabel = new Label_BarItem(catgName, "Add BarItem", this, true);
 		panel.add(addNewCategoryLabel);
-		
+
 	}
 
 	public void RefreshScrollPane(String type)
@@ -126,14 +126,26 @@ public class SettingsPanel extends JPanel
 		addScrollPane(type);
 	}
 
-	public void SetOptionsPaneCategory(String name)
+	public void SetOptionsPanelCategory(String catgName)
 	{
 		if (mainPanel.getComponentCount() > 0)
 		{
 			mainPanel.removeAll();
 		}
 
-		Panel_Options panelOptions = new Panel_Options(name, this, "CATEGORY");
+		Panel_Options panelOptions = new Panel_Options(catgName, this, "CATEGORY");
+		mainPanel.add(panelOptions);
+		Sidebar.packJFrame();
+	}
+
+	public void SetOptionsPanelBarItem(String catgName, String barName)
+	{
+		if (mainPanel.getComponentCount() > 0)
+		{
+			mainPanel.removeAll();
+		}
+
+		Panel_Options panelOptions = new Panel_Options(catgName, barName, this, "BAR_ITEM");
 		mainPanel.add(panelOptions);
 		Sidebar.packJFrame();
 	}
