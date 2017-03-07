@@ -151,6 +151,7 @@ public class Sidebar extends JFrame
 	
 	public static void packJFrame()
 	{
+		jFrame.repaint();
 		jFrame.revalidate();
 		jFrame.pack();
 	}

@@ -12,12 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
 
 import handlers.CategoryHandler;
-import main.ClickListener;
 import main.Constants;
 import main.Sidebar;
 
@@ -25,7 +21,7 @@ public class SettingsPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	public JPanel mainPanel;
+	public JPanel mainPanel = new JPanel();
 	public JPanel panelScrollPane;
 	private JScrollPane scrollPane;
 	public String currentCategoryName;
@@ -51,7 +47,7 @@ public class SettingsPanel extends JPanel
 			}
 		});
 
-		addMainPanel();
+		add(mainPanel);
 
 		scrollPane = new JScrollPane(panelScrollPane);
 		add(scrollPane, BorderLayout.LINE_START);
@@ -62,22 +58,6 @@ public class SettingsPanel extends JPanel
 		add(lblNewLabel, BorderLayout.NORTH);
 
 		Sidebar.getJframe().pack();
-	}
-
-	private void addMainPanel()
-	{
-		if (mainPanel != null)
-		{
-			mainPanel.removeAll();
-		}
-		else
-		{
-			mainPanel = new JPanel();
-			mainPanel.setLayout(null);
-		}
-
-		mainPanel.setBounds(0, 0, Constants.settingsMainWidth, Constants.settingsMainHeight);
-		add(mainPanel);
 	}
 
 	private void resetScrollPane()
@@ -121,15 +101,7 @@ public class SettingsPanel extends JPanel
 			panel.add(label);
 		}
 
-		BaseScrollLabel addNewCategoryLabel = new BaseScrollLabel("Add Category", new ClickListener()
-		{
-			@Override
-			public void singleClick(MouseEvent e)
-			{
-				
-			}
-		});
-
+		JLabel addNewCategoryLabel = new Label_Category("Add Category", this, true);
 		panel.add(addNewCategoryLabel);
 	}
 
@@ -139,33 +111,30 @@ public class SettingsPanel extends JPanel
 
 		for (String set : strings)
 		{
-			Label_BarItem label = new Label_BarItem(set);
+			Label_BarItem label = new Label_BarItem(set, this, true);
 			label.setAlignmentY(JLabel.CENTER_ALIGNMENT);
 			panel.add(label);
 		}
-	}
-}
-
-class JTextFieldLimit extends PlainDocument
-{
-	private static final long serialVersionUID = 1L;
-	private int limit;
-
-	JTextFieldLimit(int limit)
-	{
-		super();
-		this.limit = limit;
+		
+		JLabel addNewCategoryLabel = new Label_BarItem("Add BarItem", this, true);
+		panel.add(addNewCategoryLabel);
+		
 	}
 
-	@Override
-	public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException
+	public void RefreshScrollPane(String type)
 	{
-		if (str == null)
-			return;
+		addScrollPane(type);
+	}
 
-		if ((getLength() + str.length()) <= limit)
+	public void SetOptionsPaneCategory(String name)
+	{
+		if (mainPanel.getComponentCount() > 0)
 		{
-			super.insertString(offset, str, attr);
+			mainPanel.removeAll();
 		}
+
+		Panel_Options panelOptions = new Panel_Options(name, this, "CATEGORY");
+		mainPanel.add(panelOptions);
+		Sidebar.packJFrame();
 	}
 }

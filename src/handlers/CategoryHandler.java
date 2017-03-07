@@ -31,10 +31,10 @@ public class CategoryHandler
 		Set<String> keySet = catgs.categoryMap.keySet();
 		return keySet;
 	}
-	
+
 	public static Set<String> getBarItemNames(String categoryName)
 	{
-		Categories catgs = getCategories();		
+		Categories catgs = getCategories();
 		Set<String> keySet = catgs.categoryMap.get(categoryName).barItemMap.keySet();
 		return keySet;
 	}
@@ -44,7 +44,7 @@ public class CategoryHandler
 		Categories catgs = getCategories();
 		catgs.categoryMap.put(newName, catgs.categoryMap.get(oldName));
 		catgs.categoryMap.remove(oldName);
-		categoryMap = catgs.categoryMap;		
+		categoryMap = catgs.categoryMap;
 		WriteToFile();
 	}
 
@@ -76,6 +76,8 @@ public class CategoryHandler
 		Category category = new Category();
 		category.barItemMap = new HashMap<String, BarItem>();
 		categories.categoryMap.put(name, category);
+		categoryMap = categories.categoryMap;
+		WriteToFile();
 	}
 
 	public static void addBarItem(String categoryName, BarItem item)
@@ -90,12 +92,12 @@ public class CategoryHandler
 		Gson gson = new Gson();
 
 		Categories categories = getCategories();
-		
-		if(!categoryMap.isEmpty())
+
+		if (!categoryMap.isEmpty())
 		{
 			categories.categoryMap = categoryMap;
 		}
-		
+
 		/*
 		 * BarItem barItem = new BarItem(); barItem.name = "Github";
 		 * barItem.webUrl = "https://github.com/"; barItem.iconPath =
