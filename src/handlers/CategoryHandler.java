@@ -168,7 +168,6 @@ class Category
 
 class BarItem
 {
-	String name;
 	String webUrl;
 	String iconPath;
 

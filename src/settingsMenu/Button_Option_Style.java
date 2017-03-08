@@ -1,6 +1,7 @@
 package settingsMenu;
 
 import java.awt.Color;
+import java.awt.Cursor;
 
 import javax.swing.JButton;
 
@@ -14,6 +15,7 @@ public class Button_Option_Style extends JButton
 		setBorderPainted(false);
 		setFocusPainted(false);
 		setBackground(new Color(211, 211, 255));
+		setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 }

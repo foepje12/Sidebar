@@ -148,7 +148,7 @@ public class Sidebar extends JFrame
 	{
 		return jFrame;
 	}
-	
+
 	public static void packJFrame()
 	{
 		jFrame.repaint();
