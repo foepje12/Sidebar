@@ -1,18 +1,21 @@
 package settingsMenu;
 
 import java.awt.Color;
-import java.awt.Component;
+import java.awt.FileDialog;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
@@ -55,6 +58,23 @@ public class Panel_Options extends JPanel
 		textField_WebUrl.setBackground(Color.WHITE);
 		textField_WebUrl.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
+		switch (type)
+		{
+		case "CATEGORY":
+			System.out.println(CategoryHandler.getCategoryInfo(name));
+			textField_IconPath.setText(CategoryHandler.getCategoryInfo(name));
+			break;
+		case "BAR_ITEM":
+			String[] strings = CategoryHandler.getBarItemInfo(categoryName, name);
+			if (strings != null)
+			{
+				textField_IconPath.setText(strings[0]);
+				textField_WebUrl.setText(strings[1]);
+			}
+
+			break;
+		}
+
 		Button_Option_Style btnDelete = new Button_Option_Style("Delete");
 
 		Button_Option_Style btnChangeName = new Button_Option_Style("Change Name");
@@ -87,6 +107,55 @@ public class Panel_Options extends JPanel
 			{
 				if (btnChangeIcon.getModel().isPressed())
 				{
+					FileDialog fileChooser = new FileDialog(Sidebar.getJframe(), "Choose a file", FileDialog.LOAD);
+					fileChooser.setDirectory(Constants.baseFilePath);
+					fileChooser.setVisible(true);
+					fileChooser.setFilenameFilter(new FilenameFilter()
+					{
+						@Override
+						public boolean accept(File dir, String name)
+						{
+							String[] acceptedFormats =
+							{ ".png" };
+
+							for (String string : acceptedFormats)
+							{
+								if (name.endsWith(string))
+								{
+									return true;
+								}
+							}
+							return false;
+						}
+					});
+
+					String fileName = fileChooser.getFile();
+					String fileDir = fileChooser.getDirectory();
+
+					if (fileName != null && fileDir != null)
+					{
+						File source = new File(fileDir + fileName);
+						String dest = "assets/icons/";
+						try
+						{
+							Files.copy(source.toPath(), (new File(dest + fileName)).toPath(),
+									StandardCopyOption.REPLACE_EXISTING);
+
+							switch (type)
+							{
+							case "CATEGORY":
+								CategoryHandler.changeCategoryIcon(name, dest + fileName);
+								break;
+							case "BAR_ITEM":
+								CategoryHandler.changeBarItemIcon(categoryName, name, dest + fileName);
+							}
+
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		});

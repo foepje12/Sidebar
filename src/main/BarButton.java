@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -28,21 +27,17 @@ public class BarButton extends JPanel
 	private boolean isAnimating = false;
 	private boolean isExtended = false;
 
-	private String webUrl;
-
 	Timer timer;
 
-	public BarButton(Color color, int height, String webUrl, ImageIcon iconUrl)
+	public BarButton(int height, String webUrl, ImageIcon iconUrl)
 	{
 		super();
 
 		buttonHeight = height;
-		this.webUrl = webUrl;
 		setLayout(null);
 		setBounds(xFrom, height, barWidth, barWidth);
 		setPreferredSize(new Dimension(barWidth, barWidth));
 		setMinimumSize(new Dimension(barWidth, barWidth));
-		setBackground(color);
 
 		JLabel label = new JLabel(iconUrl);
 		label.setOpaque(true);

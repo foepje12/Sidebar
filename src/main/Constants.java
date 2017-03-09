@@ -22,4 +22,6 @@ public class Constants {
 	public static String filesPath = "files";
 	public static String categoriesFile = "categories.json";
 	public static String profileFile = "profiles.json";
+	
+	public static String baseFilePath = System.getProperty("user.home");
 }

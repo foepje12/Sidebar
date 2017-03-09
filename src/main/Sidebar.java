@@ -3,6 +3,7 @@ package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,19 +12,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import handlers.CategoryHandler;
 import settingsMenu.SettingsPanel;
 
 public class Sidebar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	static int barWidth;
-	static int barHeight;
-	static int screenWidth;
-	static int screenHeight;
-	static String boxType;
-
+	private static int screenHeight;
+	private static int screenWidth;
+	private static String boxType;
+	private static int barHeight;
+	private static int barWidth;
 	private static JFrame jFrame;
-	JPanel mainPanel;
+	private JPanel mainPanel;
 
 	public Sidebar()
 	{
@@ -38,6 +39,11 @@ public class Sidebar extends JFrame
 		barHeight = 300;
 		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
 		setPreferredSize(new Dimension(barWidth, barHeight));
+
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Image img = kit.createImage("assets/programIcon.png");
+		setIconImage(img);
+
 		boxType = "BarButtons";
 		DecorateFrame();
 
@@ -65,9 +71,16 @@ public class Sidebar extends JFrame
 			mainPanel.add(selector);
 			break;
 		case "BarButtons":
-			CreateButton(Color.ORANGE, 0, "https://startpagina.windesheim.nl/default.aspx", "windesheim.jpg");
-			CreateButton(Color.BLUE, 100, "https://github.com/", "github.png");
-			CreateButton(Color.RED, 200, "https://trello.com/", "trello.png");
+			CategoryHandler.getBarItemNames(categoryName);
+			
+			for()
+			{
+				
+			}
+			
+			CreateButton(0, "https://startpagina.windesheim.nl/default.aspx", "windesheim.jpg");
+			CreateButton(100, "https://github.com/", "github.png");
+			CreateButton(200, "https://trello.com/", "trello.png");
 			break;
 		case "SettingsPanel":
 			SettingsPanel settingsPanel = new SettingsPanel();
@@ -82,7 +95,7 @@ public class Sidebar extends JFrame
 		pack();
 	}
 
-	void CreateButton(Color color, int height, String webUrl, String iconUrl)
+	void CreateButton(int height, String webUrl, String iconUrl)
 	{
 		File file = new File("assets/icons/" + iconUrl);
 		Image image;
@@ -94,7 +107,7 @@ public class Sidebar extends JFrame
 				Image dimg = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 				ImageIcon imageIcon = new ImageIcon(dimg);
 
-				JPanel panel = new BarButton(color, height, webUrl, imageIcon);
+				JPanel panel = new BarButton(height, webUrl, imageIcon);
 				mainPanel.add(panel);
 			}
 			catch (IOException e)
