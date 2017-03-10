@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import handlers.CategoryHandler;
+
 public class ArcSelector extends JPanel
 {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +30,6 @@ public class ArcSelector extends JPanel
 	private Polygon[] shapes;
 	private Piece[] pieces;
 	Timer timer;
-	Piece currentPiece;
 	int currentDegrees;
 	boolean isRotating;
 	int dominantColor = 5;
@@ -47,7 +48,6 @@ public class ArcSelector extends JPanel
 		shapes = new Polygon[pieceAmount];
 		pieces = new Piece[pieceAmount];
 
-		currentPiece = pieces[6];
 		currentDegrees = 0;
 		isRotating = false;
 
@@ -86,7 +86,7 @@ public class ArcSelector extends JPanel
 			}
 		});
 
-		this.addMouseListener(new MouseAdapter()
+		addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent event)
@@ -111,7 +111,12 @@ public class ArcSelector extends JPanel
 				{
 					Sidebar.SwitchToSettingsPanel();
 				}
+			}
 
+			@Override
+			public void mouseEntered(MouseEvent event)
+			{
+				System.out.println("ENTERED");
 			}
 		});
 
@@ -120,8 +125,6 @@ public class ArcSelector extends JPanel
 			pieces[i] = new Piece(Color.GREEN);
 		}
 	}
-
-	int i = 0;
 
 	@Override
 	public void paintComponent(Graphics g)
@@ -167,7 +170,6 @@ public class ArcSelector extends JPanel
 		// Add the inner points of a Piece
 		for (int i = degrees.length - 1; i >= 0; i--)
 		{
-
 			int x = (int) getSinCos(degrees[i], radius - pieceWidth)[0];
 			int y = (int) getSinCos(degrees[i], radius - pieceWidth)[1];
 

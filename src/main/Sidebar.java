@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import handlers.CategoryHandler;
+import handlers.FileHandler;
 import settingsMenu.SettingsPanel;
 
 public class Sidebar extends JFrame
@@ -45,13 +47,14 @@ public class Sidebar extends JFrame
 		setIconImage(img);
 
 		boxType = "BarButtons";
-		DecorateFrame();
 
 		setAlwaysOnTop(true);
 		setUndecorated(true);
 		setBackground(new Color(1.0f, 1.0f, 1.0f, 0f));
 		setVisible(true);
 		pack();
+
+		DecorateFrame();
 	}
 
 	void DecorateFrame()
@@ -71,16 +74,30 @@ public class Sidebar extends JFrame
 			mainPanel.add(selector);
 			break;
 		case "BarButtons":
-			CategoryHandler.getBarItemNames(categoryName);
-			
-			for()
+			String propertyName = "currentCategory";
+
+			FileHandler.WriteToConfig(propertyName, "test");
+
+			if (FileHandler.GetConfigProperty(propertyName) != null)
 			{
-				
+				String currentCategoryName = FileHandler.GetConfigProperty(propertyName);
+				Set<String> barItemNames = CategoryHandler.getBarItemNames(currentCategoryName);
+
+				if (barItemNames != null)
+				{
+					for (int i = 0; i < barItemNames.size(); i++)
+					{
+						String[] barArray = (String[]) barItemNames.toArray();
+						String[] barItemInfo = CategoryHandler.getBarItemInfo(currentCategoryName, barArray[i]);
+						System.out.println(barItemInfo[0]);
+						CreateButton(i * 100, barItemInfo[0], barItemInfo[1]);
+					}
+				}
+				else
+				{
+					SwitchToSettingsPanel();
+				}
 			}
-			
-			CreateButton(0, "https://startpagina.windesheim.nl/default.aspx", "windesheim.jpg");
-			CreateButton(100, "https://github.com/", "github.png");
-			CreateButton(200, "https://trello.com/", "trello.png");
 			break;
 		case "SettingsPanel":
 			SettingsPanel settingsPanel = new SettingsPanel();

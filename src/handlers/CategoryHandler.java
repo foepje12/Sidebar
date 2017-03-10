@@ -3,9 +3,11 @@ package handlers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import com.google.gson.Gson;
@@ -36,16 +38,24 @@ public class CategoryHandler
 	public static Set<String> getBarItemNames(String categoryName)
 	{
 		Categories catgs = getCategories();
-		Set<String> keySet = catgs.categoryMap.get(categoryName).barItemMap.keySet();
-		return keySet;
+		try
+		{
+			Set<String> keySet = catgs.categoryMap.get(categoryName).barItemMap.keySet();
+			return keySet;
+		}
+		catch (NullPointerException ex)
+		{
+			return null;
+		}
 	}
 
 	public static Categories getCategories()
 	{
-		File file = new File(Constants.filesPath + "/" + Constants.categoriesFile);
 		try
 		{
 			Gson gson = new Gson();
+			File file = new File(Constants.filesPath + "/" + Constants.categoriesFile);
+
 			if (file.exists())
 			{
 				FileReader reader = new FileReader(file);
@@ -60,6 +70,31 @@ public class CategoryHandler
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String getCurrentCategoryName()
+	{
+		File file = new File(Constants.filesPath + "/" + Constants.configFile);
+		try
+		{
+			FileReader reader;
+			reader = new FileReader(file);
+			Properties prop = new Properties();
+			prop.load(reader);
+			String currentCategoryName = prop.getProperty("currentCategory");
+			reader.close();
+
+			return currentCategoryName;
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	public static void addCategory()
@@ -92,12 +127,10 @@ public class CategoryHandler
 		{
 			categories.categoryMap = categoryMap;
 		}
-
 		if (!(new File(Constants.filesPath).exists()))
 		{
 			new File(Constants.filesPath).mkdir();
 		}
-
 		WriteToFile(Constants.filesPath + "/" + Constants.categoriesFile, gson.toJson(categories));
 	}
 
@@ -174,7 +207,15 @@ public class CategoryHandler
 	public static String getCategoryInfo(String catgName)
 	{
 		Categories catgs = getCategories();
-		return catgs.categoryMap.get(catgName).iconPath;
+
+		try
+		{
+			return catgs.categoryMap.get(catgName).iconPath;
+		}
+		catch (NullPointerException e)
+		{
+			return "";
+		}
 	}
 
 	public static String[] getBarItemInfo(String catgName, String name)
@@ -191,9 +232,15 @@ public class CategoryHandler
 		}
 		catch (NullPointerException ex)
 		{
-			
+
 		}
 		return null;
+	}
+
+	public static int getCategoryAmount()
+	{
+		Categories categories = getCategories();
+		return categories.categoryMap.size();
 	}
 }
 

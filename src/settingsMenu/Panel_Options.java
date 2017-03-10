@@ -41,13 +41,33 @@ public class Panel_Options extends JPanel
 		super();
 		setBounds(0, 0, Constants.settingsMainWidth, Constants.settingsMainHeight);
 
+		switch (type)
+		{
+		case "CATEGORY":
+		case "BAR_ITEM":
+			OpenStandard(name, settingsPanel, type);
+			break;
+		case "CONFIG_SETTINGS":
+			OpenConfig();
+			break;
+		}
+	}
+
+	private void OpenConfig()
+	{
+		
+	}
+
+	private void OpenStandard(String name, SettingsPanel settingsPanel, String type)
+	{
 		JTextField textField_ChangeName = new JTextField();
 		JTextField textField_IconPath = new JTextField();
 		JTextField textField_WebUrl = new JTextField();
 
 		textField_ChangeName.setColumns(10);
 		textField_ChangeName.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-
+		textField_ChangeName.setText(name);
+		
 		textField_IconPath.setColumns(10);
 		textField_IconPath.setEditable(false);
 		textField_IconPath.setBackground(Color.WHITE);
@@ -71,7 +91,6 @@ public class Panel_Options extends JPanel
 				textField_IconPath.setText(strings[0]);
 				textField_WebUrl.setText(strings[1]);
 			}
-
 			break;
 		}
 

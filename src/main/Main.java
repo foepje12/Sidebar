@@ -17,11 +17,11 @@ public class Main
 
 	public static void main(String[] args)
 	{
-
-		createAndShowGUI();
+		//createAndShowGUI();
 		new Sidebar();
 	}
 
+	@SuppressWarnings("unused")
 	private static void createAndShowGUI()
 	{
 		// Check the SystemTray support

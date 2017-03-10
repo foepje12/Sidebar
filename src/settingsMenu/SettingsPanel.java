@@ -54,8 +54,8 @@ public class SettingsPanel extends JPanel
 
 		addScrollPane("CATEGORY");
 
-		JLabel lblNewLabel = new JLabel("New label");
-		add(lblNewLabel, BorderLayout.NORTH);
+		JPanel panel_Menu = new Panel_Menu(this);
+		add(panel_Menu, BorderLayout.NORTH);
 
 		Sidebar.getJframe().pack();
 	}
