@@ -29,6 +29,7 @@ public class SettingsPanel extends JFrame
 	private static final long serialVersionUID = 1L;
 	private static JFrame jframe;
 
+	// The different panels in the frame
 	public JPanel panel_OptionsMenu;
 	public JScrollPane panel_ScrollPane;
 	public JPanel panel_TopMenu;
@@ -39,6 +40,8 @@ public class SettingsPanel extends JFrame
 	{
 		super();
 		jframe = this;
+
+		// Setting up the frame size
 		int screenWidth = ScreenProperties.getScreenWidth();
 		int screenHeight = ScreenProperties.getScreenHeight();
 		int barWidth = Constants.settingsWidth;
@@ -47,16 +50,21 @@ public class SettingsPanel extends JFrame
 		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2, barHeight);
 		setPreferredSize(new Dimension(barWidth, barHeight));
 
+		// Setting up the frame itself
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		setVisible(true);
 		pack();
 
+		// Adding the panels
 		addDefaultOptionsPane();
 		addScrollPane("CATEGORY");
 		addMenuPane();
 	}
 
+	/**
+	 * Add the Options Panel
+	 */
 	private void addDefaultOptionsPane()
 	{
 		panel_OptionsMenu = new JPanel();
@@ -64,6 +72,9 @@ public class SettingsPanel extends JFrame
 		packFrame();
 	}
 
+	/**
+	 * Add the Menu Panel
+	 */
 	private void addMenuPane()
 	{
 		panel_TopMenu = new Panel_Menu(this);
@@ -71,18 +82,39 @@ public class SettingsPanel extends JFrame
 		packFrame();
 	}
 
+	/**
+	 * Add the ScrollPane Panel
+	 * 
+	 * @param type
+	 */
 	public void addScrollPane(String type)
 	{
+		if (panel_ScrollPane != null)
+		{
+			panel_ScrollPane.removeAll();
+			panel_ScrollPane = null;
+		}
+
 		panel_ScrollPane = new Label_ScrollPane(type, this);
 		add(panel_ScrollPane, BorderLayout.LINE_START);
 		packFrame();
 	}
 
+	/**
+	 * Refresh the ScrollPane Panel
+	 * 
+	 * @param type
+	 */
 	public void RefreshScrollPane(String type)
 	{
 		addScrollPane(type);
 	}
 
+	/**
+	 * Set the Options Panel to Category
+	 * 
+	 * @param catgName
+	 */
 	public void SetOptionsPanelCategory(String catgName)
 	{
 		if (panel_OptionsMenu.getComponentCount() > 0)
@@ -91,9 +123,14 @@ public class SettingsPanel extends JFrame
 		}
 
 		OpenPanelOptions(catgName, "CATEGORY");
-		packFrame();
 	}
 
+	/**
+	 * Set the Options Panel to BarItem
+	 * 
+	 * @param catgName
+	 * @param barName
+	 */
 	public void SetOptionsPanelBarItem(String catgName, String barName)
 	{
 		if (panel_OptionsMenu.getComponentCount() > 0)
@@ -103,7 +140,6 @@ public class SettingsPanel extends JFrame
 
 		this.currentCategoryName = catgName;
 		OpenPanelOptions(barName, "BAR_ITEM");
-		packFrame();
 	}
 
 	private void OpenPanelOptions(String name, String type)
@@ -122,6 +158,8 @@ public class SettingsPanel extends JFrame
 			// OpenProfile(name, this);
 			break;
 		}
+		
+		packFrame();
 	}
 
 	public static void packFrame()
@@ -133,13 +171,10 @@ public class SettingsPanel extends JFrame
 
 	public static JFrame GetJFrame()
 	{
-		try
+		if (jframe != null)
 		{
 			return jframe;
 		}
-		catch (NullPointerException ex)
-		{
-			return null;
-		}
+		return null;
 	}
 }

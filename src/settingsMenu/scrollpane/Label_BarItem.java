@@ -1,6 +1,6 @@
 package settingsMenu.scrollpane;
 
-import handlers.CategoryHandler;
+import handlers.BarItemHandler;
 import settingsMenu.SettingsPanel;
 
 public class Label_BarItem extends BaseScrollLabel
@@ -30,7 +30,7 @@ public class Label_BarItem extends BaseScrollLabel
 	{
 		if (isNew)
 		{
-			CategoryHandler.addBarItem(catgName);
+			BarItemHandler.addBarItem(catgName);
 			settingsPanel.RefreshScrollPane("BAR_ITEM");
 		}
 		else

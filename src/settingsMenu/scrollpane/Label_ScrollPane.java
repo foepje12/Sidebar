@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import handlers.BarItemHandler;
 import handlers.CategoryHandler;
 import settingsMenu.SettingsPanel;
 
@@ -54,7 +55,7 @@ public class Label_ScrollPane extends JScrollPane
 
 	private void addBarItemToScrollPane(JPanel panel, String catgName)
 	{
-		Set<String> strings = CategoryHandler.getBarItemNames(catgName);
+		Set<String> strings = BarItemHandler.getBarItemNames(catgName);
 
 		for (String set : strings)
 		{

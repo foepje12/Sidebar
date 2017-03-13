@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import handlers.CategoryHandler;
+import handlers.BarItemHandler;
 import handlers.FileHandler;
 import main.ScreenProperties;
 import main.SideBar;
@@ -37,14 +37,14 @@ public class SideButton extends JFrame
 		if (FileHandler.GetConfigProperty(propertyName) != null)
 		{
 			String currentCategoryName = FileHandler.GetConfigProperty(propertyName);
-			Set<String> barItemNames = CategoryHandler.getBarItemNames(currentCategoryName);
+			Set<String> barItemNames = BarItemHandler.getBarItemNames(currentCategoryName);
 
 			if (barItemNames != null)
 			{
 				for (int i = 0; i < barItemNames.size(); i++)
 				{
 					String[] barArray = (String[]) barItemNames.toArray();
-					String[] barItemInfo = CategoryHandler.getBarItemInfo(currentCategoryName, barArray[i]);
+					String[] barItemInfo = BarItemHandler.getBarItemInfo(currentCategoryName, barArray[i]);
 					System.out.println(barItemInfo[0]);
 					CreateButton(i * 100, barItemInfo[0], barItemInfo[1]);
 				}
