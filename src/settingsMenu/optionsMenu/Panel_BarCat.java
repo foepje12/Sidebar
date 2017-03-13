@@ -1,7 +1,11 @@
 package settingsMenu.optionsMenu;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -12,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
@@ -19,6 +24,7 @@ import javax.swing.event.ChangeListener;
 
 import handlers.CategoryHandler;
 import main.Constants;
+import main.SideBar;
 import settingsMenu.SettingsPanel;
 
 public class Panel_BarCat extends JPanel
@@ -39,8 +45,22 @@ public class Panel_BarCat extends JPanel
 	public Panel_BarCat(String name, SettingsPanel settingsPanel, String type)
 	{
 		super();
-		
 		setBounds(0, 0, Constants.settingsMainWidth, Constants.settingsMainHeight);
+		setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
+		setBackground(Color.LIGHT_GRAY);
+		setLayout(new BorderLayout());
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent event)
+			{
+				if (SwingUtilities.isMiddleMouseButton(event))
+				{
+					SideBar.SwitchToArcSelector();
+				}
+			}
+		});
 
 		JTextField textField_ChangeName = new JTextField();
 		JTextField textField_IconPath = new JTextField();
@@ -164,7 +184,7 @@ public class Panel_BarCat extends JPanel
 
 		GroupLayout gl_mainPanel = new GroupLayout(this);
 		setLayout(gl_mainPanel);
-		
+
 		gl_mainPanel.setHorizontalGroup(
 				gl_mainPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_mainPanel.createSequentialGroup()
 						.addContainerGap().addGroup(gl_mainPanel

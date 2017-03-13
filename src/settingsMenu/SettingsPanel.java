@@ -52,40 +52,23 @@ public class SettingsPanel extends JFrame
 		setVisible(true);
 		pack();
 
-		addOptionsPane();
+		addDefaultOptionsPane();
 		addScrollPane("CATEGORY");
 		addMenuPane();
+	}
 
-		JPanel panel_Menu = new Panel_Menu(this);
-		add(panel_Menu, BorderLayout.NORTH);
-
+	private void addDefaultOptionsPane()
+	{
+		panel_OptionsMenu = new JPanel();
+		add(panel_OptionsMenu, BorderLayout.CENTER);
 		packFrame();
 	}
 
 	private void addMenuPane()
 	{
-		// TODO Auto-generated method stub
-	}
-
-	private void addOptionsPane()
-	{
-		panel_OptionsMenu.setBounds(0, 0, Constants.settingsWidth, Constants.settingsHeight);
-		panel_OptionsMenu.setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
-		panel_OptionsMenu.setBackground(Color.LIGHT_GRAY);
-		panel_OptionsMenu.setLayout(new BorderLayout());
-
-		panel_OptionsMenu.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent event)
-			{
-				if (SwingUtilities.isMiddleMouseButton(event))
-				{
-					SideBar.SwitchToArcSelector();
-				}
-			}
-		});
-		add(panel_OptionsMenu);
+		panel_TopMenu = new Panel_Menu(this);
+		add(panel_TopMenu, BorderLayout.NORTH);
+		packFrame();
 	}
 
 	public void addScrollPane(String type)
