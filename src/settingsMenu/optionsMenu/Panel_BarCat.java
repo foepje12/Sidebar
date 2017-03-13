@@ -1,8 +1,7 @@
-package settingsMenu.optionsPanel;
+package settingsMenu.optionsMenu;
 
 import java.awt.Color;
 import java.awt.FileDialog;
-import java.awt.Graphics;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -11,65 +10,39 @@ import java.nio.file.StandardCopyOption;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
 
 import handlers.CategoryHandler;
 import main.Constants;
 import settingsMenu.Button_Option_Style;
 import settingsMenu.SettingsPanel;
 
-public class Panel_Options extends JPanel
+public class Panel_BarCat extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
 	private String categoryName;
 
-	public Panel_Options(String categoryName, String name, SettingsPanel settingsPanel, String type)
+	public Panel_BarCat(String categoryName, String name, SettingsPanel settingsPanel, String type)
 	{
 		this(name, settingsPanel, type);
 		this.categoryName = categoryName;
 	}
 
-	public Panel_Options(String name, SettingsPanel settingsPanel, String type)
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public Panel_BarCat(String name, SettingsPanel settingsPanel, String type)
 	{
 		super();
+		
 		setBounds(0, 0, Constants.settingsMainWidth, Constants.settingsMainHeight);
 
-		switch (type)
-		{
-		case "CATEGORY":
-		case "BAR_ITEM":
-			OpenStandard(name, settingsPanel, type);
-			break;
-		case "PROFILE":
-			OpenProfile(name, settingsPanel);
-			break;
-		case "CONFIG_SETTINGS":
-			OpenConfig();
-			break;
-		}
-	}
-
-	private void OpenProfile(String profileName, SettingsPanel panel)
-	{
-
-	}
-
-	private void OpenConfig()
-	{
-
-	}
-
-	private void OpenStandard(String name, SettingsPanel settingsPanel, String type)
-	{
 		JTextField textField_ChangeName = new JTextField();
 		JTextField textField_IconPath = new JTextField();
 		JTextField textField_WebUrl = new JTextField();
@@ -91,7 +64,6 @@ public class Panel_Options extends JPanel
 		switch (type)
 		{
 		case "CATEGORY":
-			System.out.println(CategoryHandler.getCategoryInfo(name));
 			textField_IconPath.setText(CategoryHandler.getCategoryInfo(name));
 			break;
 		case "BAR_ITEM":
@@ -122,7 +94,6 @@ public class Panel_Options extends JPanel
 					{
 						CategoryHandler.renameBarItem(categoryName, name, textField_ChangeName.getText());
 					}
-
 					settingsPanel.RefreshScrollPane(type);
 				}
 			}
@@ -193,6 +164,8 @@ public class Panel_Options extends JPanel
 		Button_Option_Style btnWebUrl = new Button_Option_Style("Change weburl");
 
 		GroupLayout gl_mainPanel = new GroupLayout(this);
+		setLayout(gl_mainPanel);
+		
 		gl_mainPanel.setHorizontalGroup(
 				gl_mainPanel.createParallelGroup(Alignment.LEADING).addGroup(gl_mainPanel.createSequentialGroup()
 						.addContainerGap().addGroup(gl_mainPanel
@@ -231,34 +204,7 @@ public class Panel_Options extends JPanel
 										.addGap(154).addComponent(btnDelete))
 								.addComponent(btnWebUrl))
 				.addContainerGap()));
+
 		setLayout(gl_mainPanel);
-
-		SettingsPanel.packFrame();
-	}
-}
-
-class JTextFieldLimit extends PlainDocument
-{
-	private static final long serialVersionUID = 1L;
-	private int limit;
-
-	JTextFieldLimit(int limit)
-	{
-		super();
-		this.limit = limit;
-	}
-
-	@Override
-	public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException
-	{
-		if (str == null)
-		{
-			return;
-		}
-
-		if ((getLength() + str.length()) <= limit)
-		{
-			super.insertString(offset, str, attr);
-		}
 	}
 }

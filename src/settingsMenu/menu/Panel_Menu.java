@@ -1,10 +1,9 @@
-package settingsMenu;
+package settingsMenu.menu;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -14,6 +13,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import main.Constants;
+import settingsMenu.Button_Menu_Style;
+import settingsMenu.SettingsPanel;
 
 public class Panel_Menu extends JPanel
 {
@@ -38,8 +39,6 @@ public class Panel_Menu extends JPanel
 		add(returnButton);
 
 		setBackground(Color.GRAY);
-
-		System.out.println(Constants.buttonIconsPath + "/leftarrow.png");
 		
 		ImageIcon imageIcon = new ImageIcon(Constants.buttonIconsPath + "/leftarrow.png");
 		setLayout(new BorderLayout(0, 0));

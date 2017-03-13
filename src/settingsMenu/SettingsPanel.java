@@ -18,7 +18,8 @@ import handlers.CategoryHandler;
 import main.Constants;
 import main.ScreenProperties;
 import main.SideBar;
-import settingsMenu.optionsPanel.Panel_Options;
+import settingsMenu.menu.Panel_Menu;
+import settingsMenu.optionsMenu.Panel_BarCat;
 
 public class SettingsPanel extends JFrame
 {
@@ -29,13 +30,15 @@ public class SettingsPanel extends JFrame
 	private JScrollPane scrollPane;
 	public String currentCategoryName;
 	private static JFrame jframe;
+	private String catgName;
 
 	public SettingsPanel()
 	{
 		super();
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new BorderLayout());
+		
 		jframe = this;
 
 		int barWidth = Constants.settingsWidth;
@@ -87,7 +90,7 @@ public class SettingsPanel extends JFrame
 		}
 	}
 
-	void addScrollPane(String type)
+	public void addScrollPane(String type)
 	{
 		resetScrollPane();
 
@@ -152,9 +155,7 @@ public class SettingsPanel extends JFrame
 			mainPanel.removeAll();
 		}
 
-		Panel_Options panelOptions = new Panel_Options(catgName, this, "CATEGORY");
-		mainPanel.add(panelOptions);
-
+		OpenPanelOptions(catgName, "CATEGORY");
 		packFrame();
 	}
 
@@ -165,14 +166,33 @@ public class SettingsPanel extends JFrame
 			mainPanel.removeAll();
 		}
 
-		Panel_Options panelOptions = new Panel_Options(catgName, barName, this, "BAR_ITEM");
-		mainPanel.add(panelOptions);
-
+		this.catgName = catgName;
+		OpenPanelOptions(barName, "BAR_ITEM");
 		packFrame();
+	}
+
+	private void OpenPanelOptions(String name, String type)
+	{
+		switch (type)
+		{
+		case "CATEGORY":
+			add(new Panel_BarCat(name, this, type));
+			packFrame();
+			break;
+		case "BAR_ITEM":
+			add(new Panel_BarCat(catgName, name, this, type));
+			packFrame();
+			break;
+		case "PROFILE":
+			// OpenProfile(name, this);
+			break;
+		}
 	}
 
 	public static void packFrame()
 	{
+		jframe.revalidate();
+		jframe.repaint();
 		jframe.pack();
 	}
 
