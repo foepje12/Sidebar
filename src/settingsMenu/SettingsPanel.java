@@ -20,6 +20,8 @@ import main.ScreenProperties;
 import main.SideBar;
 import settingsMenu.menu.Panel_Menu;
 import settingsMenu.optionsMenu.Panel_BarCat;
+import settingsMenu.scrollpane.Label_BarItem;
+import settingsMenu.scrollpane.Label_Category;
 
 public class SettingsPanel extends JFrame
 {
