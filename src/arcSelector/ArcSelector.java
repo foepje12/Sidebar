@@ -1,4 +1,4 @@
-package main;
+package arcSelector;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,7 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import handlers.CategoryHandler;
+import main.Constants;
+import main.SideBar;
 
 public class ArcSelector extends JPanel
 {
@@ -41,6 +42,7 @@ public class ArcSelector extends JPanel
 	public ArcSelector()
 	{
 		super();
+
 		radius = Constants.arcRadius;
 		pieceAmount = Constants.arcPieceAmount;
 		precision = Constants.arcPrecision;
@@ -104,12 +106,12 @@ public class ArcSelector extends JPanel
 
 				if (SwingUtilities.isRightMouseButton(event))
 				{
-					Sidebar.SwitchToBarButtons();
+					SideBar.SwitchToBarButtons();
 				}
 
 				if (SwingUtilities.isMiddleMouseButton(event))
 				{
-					Sidebar.SwitchToSettingsPanel();
+					SideBar.SwitchToSettingsPanel();
 				}
 			}
 
@@ -120,9 +122,11 @@ public class ArcSelector extends JPanel
 			}
 		});
 
+		// Create pieces
 		for (int i = 0; i < pieceAmount; i++)
 		{
-			pieces[i] = new Piece(Color.GREEN);
+			// CategoryHandler.get
+			// pieces[i] = new Piece();
 		}
 	}
 
@@ -146,7 +150,7 @@ public class ArcSelector extends JPanel
 	void DrawPiece(Graphics g, int p)
 	{
 		shapes[p] = new Polygon();
-		g.setColor(pieces[p].getColor());
+		g.setColor(new Color(180, 180, 180));
 
 		float[] degrees = new float[precision];
 
@@ -175,7 +179,7 @@ public class ArcSelector extends JPanel
 
 			shapes[p].addPoint(x, y);
 		}
-
+		//g.drawImage(pieces[p].getIconFile(), 0, 0, null);
 		g.fillPolygon(shapes[p]);
 	}
 
@@ -186,7 +190,7 @@ public class ArcSelector extends JPanel
 	 * @param radius
 	 * @return double[] sinus and cosinus
 	 */
-	double[] getSinCos(float degrees, int radius)
+	private double[] getSinCos(float degrees, int radius)
 	{
 		double radians = (Math.PI / 180) * degrees;
 
@@ -204,18 +208,8 @@ public class ArcSelector extends JPanel
 	 */
 	public void repaintThis()
 	{
-		for (int i = 0; i < pieceAmount; i++)
-		{
-			pieces[i].setColor(Color.DARK_GRAY);
-
-			if (i == dominantColor)
-			{
-				pieces[i].setColor(Color.GREEN);
-				this.repaint();
-				this.revalidate();
-			}
-		}
-
+		repaint();
+		revalidate();
 	}
 
 	/**

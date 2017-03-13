@@ -12,17 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-public class Main
+public class TrayItem
 {
-
-	public static void main(String[] args)
-	{
-		//createAndShowGUI();
-		new Sidebar();
-	}
-
-	@SuppressWarnings("unused")
-	private static void createAndShowGUI()
+	public static void createAndShowGUI()
 	{
 		// Check the SystemTray support
 		if (!SystemTray.isSupported())
@@ -67,7 +59,7 @@ public class Main
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				Sidebar.SwitchToSettingsPanel();
+				SideBar.SwitchToSettingsPanel();
 			}
 		});
 
@@ -84,8 +76,7 @@ public class Main
 	// Obtain the image URL
 	protected static Image createImage(String path)
 	{
-		ImageIcon icon = new ImageIcon(path);		
+		ImageIcon icon = new ImageIcon(path);
 		return icon.getImage();
 	}
-
 }

@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
-import main.ClickListener;
+import listeners.ClickListener;
 import main.Constants;
 
 public class BaseScrollLabel extends JLabel

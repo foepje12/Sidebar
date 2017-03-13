@@ -1,4 +1,4 @@
-package main;
+package listeners;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;

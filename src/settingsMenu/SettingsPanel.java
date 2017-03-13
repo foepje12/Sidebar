@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -15,9 +16,11 @@ import javax.swing.SwingUtilities;
 
 import handlers.CategoryHandler;
 import main.Constants;
-import main.Sidebar;
+import main.ScreenProperties;
+import main.SideBar;
+import settingsMenu.optionsPanel.Panel_Options;
 
-public class SettingsPanel extends JPanel
+public class SettingsPanel extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 
@@ -25,24 +28,40 @@ public class SettingsPanel extends JPanel
 	public JPanel panelScrollPane;
 	private JScrollPane scrollPane;
 	public String currentCategoryName;
+	private static JFrame jframe;
 
 	public SettingsPanel()
 	{
 		super();
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		setBounds(0, 0, Constants.settingsWidth, Constants.settingsHeight);
-		setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
-		setBackground(Color.LIGHT_GRAY);
-		setLayout(new BorderLayout());
+		jframe = this;
 
-		addMouseListener(new MouseAdapter()
+		int barWidth = Constants.settingsWidth;
+		int barHeight = Constants.settingsHeight;
+		setBounds(ScreenProperties.getScreenWidth() - barWidth,
+				(ScreenProperties.getScreenHeight() / 2) - (barHeight / 2) * 3, barWidth / 2, barHeight);
+		setPreferredSize(new Dimension(barWidth, barHeight));
+
+		setVisible(true);
+		pack();
+
+		JPanel mainPanel = new JPanel();
+
+		mainPanel.setBounds(0, 0, Constants.settingsWidth, Constants.settingsHeight);
+		mainPanel.setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
+		mainPanel.setBackground(Color.LIGHT_GRAY);
+		mainPanel.setLayout(new BorderLayout());
+
+		mainPanel.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent event)
 			{
 				if (SwingUtilities.isMiddleMouseButton(event))
 				{
-					Sidebar.SwitchToArcSelector();
+					SideBar.SwitchToArcSelector();
 				}
 			}
 		});
@@ -57,7 +76,7 @@ public class SettingsPanel extends JPanel
 		JPanel panel_Menu = new Panel_Menu(this);
 		add(panel_Menu, BorderLayout.NORTH);
 
-		Sidebar.getJframe().pack();
+		packFrame();
 	}
 
 	private void resetScrollPane()
@@ -87,7 +106,8 @@ public class SettingsPanel extends JPanel
 		}
 
 		scrollPane.setViewportView(panelScrollPane);
-		Sidebar.packJFrame();
+
+		packFrame();
 	}
 
 	private void addCategoriesToScrollPane(JPanel panel)
@@ -118,7 +138,6 @@ public class SettingsPanel extends JPanel
 
 		JLabel addNewCategoryLabel = new Label_BarItem(catgName, "Add BarItem", this, true);
 		panel.add(addNewCategoryLabel);
-
 	}
 
 	public void RefreshScrollPane(String type)
@@ -135,7 +154,8 @@ public class SettingsPanel extends JPanel
 
 		Panel_Options panelOptions = new Panel_Options(catgName, this, "CATEGORY");
 		mainPanel.add(panelOptions);
-		Sidebar.packJFrame();
+
+		packFrame();
 	}
 
 	public void SetOptionsPanelBarItem(String catgName, String barName)
@@ -147,6 +167,24 @@ public class SettingsPanel extends JPanel
 
 		Panel_Options panelOptions = new Panel_Options(catgName, barName, this, "BAR_ITEM");
 		mainPanel.add(panelOptions);
-		Sidebar.packJFrame();
+
+		packFrame();
+	}
+
+	public static void packFrame()
+	{
+		jframe.pack();
+	}
+
+	public static JFrame GetJFrame()
+	{
+		try
+		{
+			return jframe;
+		}
+		catch (NullPointerException ex)
+		{
+			return null;
+		}
 	}
 }

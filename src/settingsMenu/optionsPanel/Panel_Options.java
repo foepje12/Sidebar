@@ -1,7 +1,8 @@
-package settingsMenu;
+package settingsMenu.optionsPanel;
 
 import java.awt.Color;
 import java.awt.FileDialog;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -22,7 +23,8 @@ import javax.swing.text.PlainDocument;
 
 import handlers.CategoryHandler;
 import main.Constants;
-import main.Sidebar;
+import settingsMenu.Button_Option_Style;
+import settingsMenu.SettingsPanel;
 
 public class Panel_Options extends JPanel
 {
@@ -47,15 +49,23 @@ public class Panel_Options extends JPanel
 		case "BAR_ITEM":
 			OpenStandard(name, settingsPanel, type);
 			break;
+		case "PROFILE":
+			OpenProfile(name, settingsPanel);
+			break;
 		case "CONFIG_SETTINGS":
 			OpenConfig();
 			break;
 		}
 	}
 
+	private void OpenProfile(String profileName, SettingsPanel panel)
+	{
+
+	}
+
 	private void OpenConfig()
 	{
-		
+
 	}
 
 	private void OpenStandard(String name, SettingsPanel settingsPanel, String type)
@@ -67,7 +77,7 @@ public class Panel_Options extends JPanel
 		textField_ChangeName.setColumns(10);
 		textField_ChangeName.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		textField_ChangeName.setText(name);
-		
+
 		textField_IconPath.setColumns(10);
 		textField_IconPath.setEditable(false);
 		textField_IconPath.setBackground(Color.WHITE);
@@ -104,11 +114,11 @@ public class Panel_Options extends JPanel
 			{
 				if (btnChangeName.getModel().isPressed())
 				{
-					if (type == "CATEGORY")
+					if (type.equals("CATEGORY"))
 					{
 						CategoryHandler.renameCategory(name, textField_ChangeName.getText());
 					}
-					if (type == "BAR_ITEM")
+					if (type.equals("BAR_ITEM"))
 					{
 						CategoryHandler.renameBarItem(categoryName, name, textField_ChangeName.getText());
 					}
@@ -126,7 +136,8 @@ public class Panel_Options extends JPanel
 			{
 				if (btnChangeIcon.getModel().isPressed())
 				{
-					FileDialog fileChooser = new FileDialog(Sidebar.getJframe(), "Choose a file", FileDialog.LOAD);
+					FileDialog fileChooser = new FileDialog(SettingsPanel.GetJFrame(), "Choose a file",
+							FileDialog.LOAD);
 					fileChooser.setDirectory(Constants.baseFilePath);
 					fileChooser.setVisible(true);
 					fileChooser.setFilenameFilter(new FilenameFilter()
@@ -222,7 +233,7 @@ public class Panel_Options extends JPanel
 				.addContainerGap()));
 		setLayout(gl_mainPanel);
 
-		Sidebar.packJFrame();
+		SettingsPanel.packFrame();
 	}
 }
 

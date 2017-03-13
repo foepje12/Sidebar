@@ -1,4 +1,4 @@
-package main;
+package sideButton;
 
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
+import main.SideBar;
 
 public class BarButton extends JPanel
 {
@@ -95,7 +97,7 @@ public class BarButton extends JPanel
 
 				if (SwingUtilities.isRightMouseButton(event))
 				{
-					Sidebar.SwitchToArcSelector();
+					SideBar.SwitchToArcSelector();
 				}
 			}
 		});
