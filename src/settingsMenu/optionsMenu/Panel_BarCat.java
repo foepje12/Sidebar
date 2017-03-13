@@ -12,9 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -24,6 +28,7 @@ import handlers.CategoryHandler;
 import main.Constants;
 import main.SideBar;
 import settingsMenu.SettingsPanel;
+import javax.swing.SwingConstants;
 
 public class Panel_BarCat extends JPanel
 {
@@ -44,7 +49,7 @@ public class Panel_BarCat extends JPanel
 	{
 		super();
 		setBounds(0, 0, Constants.settingsMainWidth, Constants.settingsMainHeight);
-		setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
+		setPreferredSize(new Dimension(Constants.settingsMainWidth, Constants.settingsMainHeight));
 		setBackground(Color.LIGHT_GRAY);
 
 		addMouseListener(new MouseAdapter()
@@ -70,16 +75,21 @@ public class Panel_BarCat extends JPanel
 		textField_WebUrl.setBackground(Color.WHITE);
 		textField_WebUrl.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 
+		JLabel label_icon = new JLabel();
+		label_icon.setHorizontalAlignment(SwingConstants.CENTER);
+		label_icon.setPreferredSize(new Dimension(75, 75));
+		label_icon.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+
 		switch (type)
 		{
 		case "CATEGORY":
-			new JLabel(CategoryHandler.getCategoryInfo(catgName));
+			label_icon.setIcon(new ImageIcon(CategoryHandler.getCategoryInfo(name)));
 			break;
 		case "BAR_ITEM":
 			String[] strings = BarItemHandler.getBarItemInfo(catgName, name);
 			if (strings != null)
 			{
-				new JLabel(strings[0]);
+				label_icon.setIcon(new ImageIcon(strings[0]));
 				textField_WebUrl.setText(strings[1]);
 			}
 			break;
@@ -95,6 +105,7 @@ public class Panel_BarCat extends JPanel
 				{
 					CategoryHandler.deleteCategory(name);
 					settingsPanel.RefreshScrollPane(type);
+					settingsPanel.ResetOptionsPanel();
 				}
 			}
 		});
@@ -190,10 +201,63 @@ public class Panel_BarCat extends JPanel
 			{
 				if (btnWebUrl.getModel().isPressed())
 				{
-					BarItemHandler.changeBarItemWebUrl();
+					BarItemHandler.changeBarItemWebUrl(catgName, name, textField_WebUrl.getText());
 				}
 			}
 		});
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(29)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addGroup(groupLayout
+												.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+														.createSequentialGroup().addComponent(
+																textField_WebUrl, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(
+																btnWebUrl, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE))
+												.addGroup(groupLayout.createSequentialGroup()
+														.addComponent(textField_ChangeName, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(btnChangeName, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+										.addGap(73)
+										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addComponent(label_icon, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+												.addComponent(btnChangeIcon, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+						.addGap(196)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(8).addGroup(groupLayout
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(label_icon, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnChangeIcon, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(163).addComponent(btnDelete, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(textField_ChangeName, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnChangeName, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(8)
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(textField_WebUrl, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(btnWebUrl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))))
+						.addContainerGap()));
+		setLayout(groupLayout);
 
 	}
 }

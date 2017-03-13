@@ -1,27 +1,16 @@
 package settingsMenu;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Set;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
-import handlers.CategoryHandler;
 import main.Constants;
 import main.ScreenProperties;
-import main.SideBar;
 import settingsMenu.menu.Panel_Menu;
 import settingsMenu.optionsMenu.Panel_BarCat;
-import settingsMenu.scrollpane.Label_BarItem;
-import settingsMenu.scrollpane.Label_Category;
 import settingsMenu.scrollpane.Label_ScrollPane;
 
 public class SettingsPanel extends JFrame
@@ -47,7 +36,7 @@ public class SettingsPanel extends JFrame
 		int barWidth = Constants.settingsWidth;
 		int barHeight = Constants.settingsHeight;
 
-		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2, barHeight);
+		setBounds((screenWidth / 2) - (barWidth / 2), (screenHeight / 2) - (barHeight / 2), barWidth, barHeight);
 		setPreferredSize(new Dimension(barWidth, barHeight));
 
 		// Setting up the frame itself
@@ -92,6 +81,7 @@ public class SettingsPanel extends JFrame
 		if (panel_ScrollPane != null)
 		{
 			panel_ScrollPane.removeAll();
+			remove(panel_ScrollPane);
 			panel_ScrollPane = null;
 		}
 
@@ -117,11 +107,7 @@ public class SettingsPanel extends JFrame
 	 */
 	public void SetOptionsPanelCategory(String catgName)
 	{
-		if (panel_OptionsMenu.getComponentCount() > 0)
-		{
-			panel_OptionsMenu.removeAll();
-		}
-
+		DeleteOptionsPanel();
 		OpenPanelOptions(catgName, "CATEGORY");
 	}
 
@@ -133,13 +119,19 @@ public class SettingsPanel extends JFrame
 	 */
 	public void SetOptionsPanelBarItem(String catgName, String barName)
 	{
-		if (panel_OptionsMenu.getComponentCount() > 0)
-		{
-			panel_OptionsMenu.removeAll();
-		}
-
+		DeleteOptionsPanel();
 		this.currentCategoryName = catgName;
 		OpenPanelOptions(barName, "BAR_ITEM");
+	}
+
+	private void DeleteOptionsPanel()
+	{
+		if (panel_OptionsMenu != null)
+		{
+			panel_OptionsMenu.removeAll();
+			remove(panel_OptionsMenu);
+			panel_OptionsMenu = null;
+		}
 	}
 
 	private void OpenPanelOptions(String name, String type)
@@ -147,26 +139,26 @@ public class SettingsPanel extends JFrame
 		switch (type)
 		{
 		case "CATEGORY":
-			add(new Panel_BarCat(name, this, type));
+			panel_OptionsMenu = new Panel_BarCat(name, this, type);
+			add(panel_OptionsMenu);
 			packFrame();
 			break;
 		case "BAR_ITEM":
-			add(new Panel_BarCat(currentCategoryName, name, this, type));
+			panel_OptionsMenu = new Panel_BarCat(currentCategoryName, name, this, type);
+			add(panel_OptionsMenu);
 			packFrame();
 			break;
 		case "PROFILE":
 			// OpenProfile(name, this);
 			break;
 		}
-		
-		packFrame();
 	}
 
 	public static void packFrame()
 	{
-		jframe.revalidate();
 		jframe.repaint();
 		jframe.pack();
+		jframe.revalidate();
 	}
 
 	public static JFrame GetJFrame()
@@ -176,5 +168,13 @@ public class SettingsPanel extends JFrame
 			return jframe;
 		}
 		return null;
+	}
+
+	public void ResetOptionsPanel()
+	{
+		DeleteOptionsPanel();
+		panel_OptionsMenu = new JPanel();
+		add(panel_OptionsMenu);
+		packFrame();
 	}
 }

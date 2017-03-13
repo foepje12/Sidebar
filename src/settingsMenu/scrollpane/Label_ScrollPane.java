@@ -14,7 +14,6 @@ import settingsMenu.SettingsPanel;
 public class Label_ScrollPane extends JScrollPane
 {
 	private static final long serialVersionUID = 1L;
-	private String currentCategoryName;
 	private SettingsPanel settingsPanel;
 
 	public Label_ScrollPane(String type, SettingsPanel settingsPanel)
@@ -31,7 +30,7 @@ public class Label_ScrollPane extends JScrollPane
 			addCategoriesToScrollPane(panelScrollPane);
 			break;
 		case "BAR_ITEM":
-			addBarItemToScrollPane(panelScrollPane, currentCategoryName);
+			addBarItemToScrollPane(panelScrollPane, CategoryHandler.getCurrentCategoryName());
 			break;
 		}
 
@@ -55,6 +54,7 @@ public class Label_ScrollPane extends JScrollPane
 
 	private void addBarItemToScrollPane(JPanel panel, String catgName)
 	{
+		System.out.println(catgName);
 		Set<String> strings = BarItemHandler.getBarItemNames(catgName);
 
 		for (String set : strings)
@@ -66,10 +66,5 @@ public class Label_ScrollPane extends JScrollPane
 
 		JLabel addNewCategoryLabel = new Label_BarItem(catgName, "Add BarItem", settingsPanel, true);
 		panel.add(addNewCategoryLabel);
-	}
-
-	private void resetScrollPane()
-	{
-		removeAll();
 	}
 }

@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 
 import arcSelector.Frame_ArcSelector;
@@ -13,7 +15,14 @@ public class SideBar
 
 	public static void main(String[] args)
 	{
-		SwitchToSettingsPanel();
+		EventQueue.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				SwitchToSettingsPanel();
+			}
+		});
 	}
 
 	public static void SwitchToArcSelector()
@@ -21,7 +30,7 @@ public class SideBar
 		DeleteCurrentFrame();
 		JFrame selector = new Frame_ArcSelector();
 		currentJFrame = selector;
-		
+
 	}
 
 	public static void SwitchToBarButtons()

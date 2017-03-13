@@ -19,12 +19,6 @@ public class BarItemHandler extends JSonInfoHandler
 		barItemMap = new HashMap<String, BarItem>();
 	}
 	
-	public static void changeBarItemWebUrl()
-	{
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public static Set<String> getBarItemNames(String categoryName)
 	{
 		Categories catgs = getCategories();
@@ -57,6 +51,14 @@ public class BarItemHandler extends JSonInfoHandler
 		catg.barItemMap.put(newName, catg.barItemMap.get(oldName));
 		catg.barItemMap.remove(oldName);
 		barItemMap = catg.barItemMap;
+		WriteBarItemToFile(catgName);
+	}
+	
+	public static void changeBarItemWebUrl(String catgName, String name, String webUrl)
+	{
+		Categories catgs = getCategories();
+		catgs.categoryMap.get(catgName).barItemMap.get(name).webUrl = webUrl;
+		barItemMap = catgs.categoryMap.get(catgName).barItemMap;
 		WriteBarItemToFile(catgName);
 	}
 	
