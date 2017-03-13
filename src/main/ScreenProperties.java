@@ -5,9 +5,9 @@ import java.awt.GraphicsEnvironment;
 
 public class ScreenProperties
 {
-	static GraphicsDevice gd;
-	static int screenWidth;
-	static int screenHeight;
+	private static GraphicsDevice gd;
+	private static int screenWidth;
+	private static int screenHeight;
 
 	static int tileSize = 124;
 

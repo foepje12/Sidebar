@@ -13,7 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import main.Constants;
-import settingsMenu.Button_Menu_Style;
 import settingsMenu.SettingsPanel;
 
 public class Panel_Menu extends JPanel

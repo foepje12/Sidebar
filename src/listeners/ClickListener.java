@@ -13,8 +13,8 @@ public class ClickListener extends MouseAdapter implements ActionListener
 	private final static int clickInterval = (Integer) Toolkit.getDefaultToolkit()
 			.getDesktopProperty("awt.multiClickInterval");
 
-	MouseEvent lastEvent;
-	Timer timer;
+	private MouseEvent lastEvent;
+	private Timer timer;
 
 	public ClickListener()
 	{
@@ -50,7 +50,7 @@ public class ClickListener extends MouseAdapter implements ActionListener
 		timer.stop();
 		singleClick(lastEvent);
 	}
-
+	
 	public void singleClick(MouseEvent e)
 	{
 	}

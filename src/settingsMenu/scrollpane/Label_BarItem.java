@@ -1,7 +1,6 @@
 package settingsMenu.scrollpane;
 
 import handlers.CategoryHandler;
-import settingsMenu.BaseScrollLabel;
 import settingsMenu.SettingsPanel;
 
 public class Label_BarItem extends BaseScrollLabel

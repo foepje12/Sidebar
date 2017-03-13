@@ -29,10 +29,10 @@ public class ArcSelector extends JPanel
 	private int precision;
 	private int pieceWidth;
 	private Polygon[] shapes;
-	private Piece[] pieces;
-	Timer timer;
-	int currentDegrees;
-	boolean isRotating;
+	//private Piece[] pieces;
+	private Timer timer;
+	private int currentDegrees;
+	private boolean isRotating;
 	int dominantColor = 5;
 
 	int rotationAmount;
@@ -48,7 +48,7 @@ public class ArcSelector extends JPanel
 		precision = Constants.arcPrecision;
 		pieceWidth = Constants.arcPieceWidth;
 		shapes = new Polygon[pieceAmount];
-		pieces = new Piece[pieceAmount];
+		//pieces = new Piece[pieceAmount];
 
 		currentDegrees = 0;
 		isRotating = false;
@@ -147,7 +147,7 @@ public class ArcSelector extends JPanel
 		g2d.dispose();
 	}
 
-	void DrawPiece(Graphics g, int p)
+	private void DrawPiece(Graphics g, int p)
 	{
 		shapes[p] = new Polygon();
 		g.setColor(new Color(180, 180, 180));
@@ -280,7 +280,7 @@ public class ArcSelector extends JPanel
 		timer.start();
 	}
 
-	void CheckCurrentColor()
+	private void CheckCurrentColor()
 	{
 		if (dominantColor < 0)
 		{

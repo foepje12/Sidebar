@@ -19,7 +19,6 @@ import javax.swing.event.ChangeListener;
 
 import handlers.CategoryHandler;
 import main.Constants;
-import settingsMenu.Button_Option_Style;
 import settingsMenu.SettingsPanel;
 
 public class Panel_BarCat extends JPanel

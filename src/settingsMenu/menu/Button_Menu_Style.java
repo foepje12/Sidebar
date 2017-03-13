@@ -1,4 +1,4 @@
-package settingsMenu;
+package settingsMenu.menu;
 
 import java.awt.Color;
 import java.awt.Cursor;

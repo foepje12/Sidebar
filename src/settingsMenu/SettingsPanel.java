@@ -22,44 +22,59 @@ import settingsMenu.menu.Panel_Menu;
 import settingsMenu.optionsMenu.Panel_BarCat;
 import settingsMenu.scrollpane.Label_BarItem;
 import settingsMenu.scrollpane.Label_Category;
+import settingsMenu.scrollpane.Label_ScrollPane;
 
 public class SettingsPanel extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-
-	public JPanel mainPanel = new JPanel();
-	public JPanel panelScrollPane;
-	private JScrollPane scrollPane;
-	public String currentCategoryName;
 	private static JFrame jframe;
-	private String catgName;
+
+	public JPanel panel_OptionsMenu;
+	public JScrollPane panel_ScrollPane;
+	public JPanel panel_TopMenu;
+
+	public String currentCategoryName;
 
 	public SettingsPanel()
 	{
 		super();
+		jframe = this;
+		int screenWidth = ScreenProperties.getScreenWidth();
+		int screenHeight = ScreenProperties.getScreenHeight();
+		int barWidth = Constants.settingsWidth;
+		int barHeight = Constants.settingsHeight;
+
+		setBounds(screenWidth - barWidth, (screenHeight / 2) - (barHeight / 2) * 3, barWidth / 2, barHeight);
+		setPreferredSize(new Dimension(barWidth, barHeight));
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		
-		jframe = this;
-
-		int barWidth = Constants.settingsWidth;
-		int barHeight = Constants.settingsHeight;
-		setBounds(ScreenProperties.getScreenWidth() - barWidth,
-				(ScreenProperties.getScreenHeight() / 2) - (barHeight / 2) * 3, barWidth / 2, barHeight);
-		setPreferredSize(new Dimension(barWidth, barHeight));
-
 		setVisible(true);
 		pack();
 
-		JPanel mainPanel = new JPanel();
+		addOptionsPane();
+		addScrollPane("CATEGORY");
+		addMenuPane();
 
-		mainPanel.setBounds(0, 0, Constants.settingsWidth, Constants.settingsHeight);
-		mainPanel.setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
-		mainPanel.setBackground(Color.LIGHT_GRAY);
-		mainPanel.setLayout(new BorderLayout());
+		JPanel panel_Menu = new Panel_Menu(this);
+		add(panel_Menu, BorderLayout.NORTH);
 
-		mainPanel.addMouseListener(new MouseAdapter()
+		packFrame();
+	}
+
+	private void addMenuPane()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	private void addOptionsPane()
+	{
+		panel_OptionsMenu.setBounds(0, 0, Constants.settingsWidth, Constants.settingsHeight);
+		panel_OptionsMenu.setPreferredSize(new Dimension(Constants.settingsWidth, Constants.settingsHeight));
+		panel_OptionsMenu.setBackground(Color.LIGHT_GRAY);
+		panel_OptionsMenu.setLayout(new BorderLayout());
+
+		panel_OptionsMenu.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent event)
@@ -70,79 +85,14 @@ public class SettingsPanel extends JFrame
 				}
 			}
 		});
-
-		add(mainPanel);
-
-		scrollPane = new JScrollPane(panelScrollPane);
-		add(scrollPane, BorderLayout.LINE_START);
-
-		addScrollPane("CATEGORY");
-
-		JPanel panel_Menu = new Panel_Menu(this);
-		add(panel_Menu, BorderLayout.NORTH);
-
-		packFrame();
-	}
-
-	private void resetScrollPane()
-	{
-		if (panelScrollPane != null)
-		{
-			panelScrollPane.removeAll();
-		}
+		add(panel_OptionsMenu);
 	}
 
 	public void addScrollPane(String type)
 	{
-		resetScrollPane();
-
-		panelScrollPane = new JPanel();
-
-		panelScrollPane.setLayout(new BoxLayout(panelScrollPane, BoxLayout.Y_AXIS));
-
-		switch (type)
-		{
-		case "CATEGORY":
-			addCategoriesToScrollPane(panelScrollPane);
-			break;
-		case "BAR_ITEM":
-			addBarItemToScrollPane(panelScrollPane, currentCategoryName);
-			break;
-		}
-
-		scrollPane.setViewportView(panelScrollPane);
-
+		panel_ScrollPane = new Label_ScrollPane(type, this);
+		add(panel_ScrollPane, BorderLayout.LINE_START);
 		packFrame();
-	}
-
-	private void addCategoriesToScrollPane(JPanel panel)
-	{
-		Set<String> strings = CategoryHandler.getCategoryNames();
-
-		for (String catgNames : strings)
-		{
-			JLabel label = new Label_Category(catgNames, this);
-
-			panel.add(label);
-		}
-
-		JLabel addNewCategoryLabel = new Label_Category("Add Category", this, true);
-		panel.add(addNewCategoryLabel);
-	}
-
-	private void addBarItemToScrollPane(JPanel panel, String catgName)
-	{
-		Set<String> strings = CategoryHandler.getBarItemNames(catgName);
-
-		for (String set : strings)
-		{
-			Label_BarItem label = new Label_BarItem(catgName, set, this);
-			label.setAlignmentY(JLabel.CENTER_ALIGNMENT);
-			panel.add(label);
-		}
-
-		JLabel addNewCategoryLabel = new Label_BarItem(catgName, "Add BarItem", this, true);
-		panel.add(addNewCategoryLabel);
 	}
 
 	public void RefreshScrollPane(String type)
@@ -152,9 +102,9 @@ public class SettingsPanel extends JFrame
 
 	public void SetOptionsPanelCategory(String catgName)
 	{
-		if (mainPanel.getComponentCount() > 0)
+		if (panel_OptionsMenu.getComponentCount() > 0)
 		{
-			mainPanel.removeAll();
+			panel_OptionsMenu.removeAll();
 		}
 
 		OpenPanelOptions(catgName, "CATEGORY");
@@ -163,12 +113,12 @@ public class SettingsPanel extends JFrame
 
 	public void SetOptionsPanelBarItem(String catgName, String barName)
 	{
-		if (mainPanel.getComponentCount() > 0)
+		if (panel_OptionsMenu.getComponentCount() > 0)
 		{
-			mainPanel.removeAll();
+			panel_OptionsMenu.removeAll();
 		}
 
-		this.catgName = catgName;
+		this.currentCategoryName = catgName;
 		OpenPanelOptions(barName, "BAR_ITEM");
 		packFrame();
 	}
@@ -182,7 +132,7 @@ public class SettingsPanel extends JFrame
 			packFrame();
 			break;
 		case "BAR_ITEM":
-			add(new Panel_BarCat(catgName, name, this, type));
+			add(new Panel_BarCat(currentCategoryName, name, this, type));
 			packFrame();
 			break;
 		case "PROFILE":

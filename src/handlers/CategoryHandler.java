@@ -246,13 +246,13 @@ public class CategoryHandler
 
 class Categories
 {
-	Map<String, Category> categoryMap;
+	public Map<String, Category> categoryMap;
 }
 
 class Category
 {
-	Map<String, BarItem> barItemMap;
-	String iconPath;
+	public Map<String, BarItem> barItemMap;
+	public String iconPath;
 }
 
 class BarItem

@@ -1,4 +1,4 @@
-package settingsMenu;
+package settingsMenu.scrollpane;
 
 import java.awt.Color;
 import java.awt.Dimension;
