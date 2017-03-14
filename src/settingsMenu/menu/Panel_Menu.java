@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,6 +42,7 @@ public class Panel_Menu extends JPanel
 		add(returnButton);
 
 		setBackground(Color.GRAY);
+		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
 		ImageIcon imageIcon = new ImageIcon(Constants.buttonIconsPath + "/leftarrow.png");
 		setLayout(new BorderLayout(0, 0));

@@ -31,7 +31,7 @@ public class Label_BarItem extends BaseScrollLabel
 		if (isNew)
 		{
 			BarItemHandler.addBarItem(catgName);
-			settingsPanel.RefreshScrollPane("BAR_ITEM");
+			settingsPanel.addScrollPane("BAR_ITEM");
 		}
 		else
 		{

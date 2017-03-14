@@ -15,6 +15,7 @@ import main.ScreenProperties;
 import main.SideBar;
 import settingsMenu.menu.Panel_Menu;
 import settingsMenu.optionsMenu.Panel_BarCat;
+import settingsMenu.optionsMenu.Panel_Profile;
 import settingsMenu.scrollpane.Label_ScrollPane;
 
 public class SettingsPanel extends JFrame
@@ -29,6 +30,7 @@ public class SettingsPanel extends JFrame
 	public JPanel panel_TopMenu;
 
 	public String currentCategoryName;
+	public String currentPofileName;
 
 	public SettingsPanel()
 	{
@@ -109,16 +111,6 @@ public class SettingsPanel extends JFrame
 	}
 
 	/**
-	 * Refresh the ScrollPane Panel
-	 * 
-	 * @param type
-	 */
-	public void RefreshScrollPane(String type)
-	{
-		addScrollPane(type);
-	}
-
-	/**
 	 * Set the Options Panel to Category
 	 * 
 	 * @param catgName
@@ -168,17 +160,19 @@ public class SettingsPanel extends JFrame
 		switch (type)
 		{
 		case "CATEGORY":
-			panel_OptionsMenu = new Panel_BarCat(name, this, type);
+			panel_OptionsMenu = new Panel_BarCat(name, type);
 			add(panel_OptionsMenu);
 			packFrame();
 			break;
 		case "BAR_ITEM":
-			panel_OptionsMenu = new Panel_BarCat(currentCategoryName, name, this, type);
+			panel_OptionsMenu = new Panel_BarCat(currentCategoryName, name, type);
 			add(panel_OptionsMenu);
 			packFrame();
 			break;
 		case "PROFILE":
-			// OpenProfile(name, this);
+			panel_OptionsMenu = new Panel_Profile(name);
+			add(panel_OptionsMenu);
+			packFrame();
 			break;
 		}
 	}

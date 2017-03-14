@@ -1,8 +1,5 @@
 package settingsMenu.scrollpane;
 
-import javax.swing.JLabel;
-
-import handlers.CategoryHandler;
 import handlers.ProfileHandler;
 import settingsMenu.SettingsPanel;
 
@@ -32,11 +29,11 @@ public class Label_Profile extends BaseScrollLabel
 		if (isNew)
 		{
 			ProfileHandler.addProfile();
-			settingsPanel.RefreshScrollPane("CATEGORY");
+			settingsPanel.addScrollPane("PROFILE");
 		}
 		else
 		{
-			settingsPanel.currentCategoryName = profName;
+			settingsPanel.currentPofileName = profName;
 			settingsPanel.SetOptionsPanelProfile(profName);
 		}
 	}
@@ -44,7 +41,7 @@ public class Label_Profile extends BaseScrollLabel
 	@Override
 	public void doDoubleClick()
 	{
-		settingsPanel.currentCategoryName = profName;
+		settingsPanel.currentPofileName = profName;
 		settingsPanel.addScrollPane("CATEGORY");
 	}
 

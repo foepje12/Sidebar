@@ -36,18 +36,21 @@ public class Panel_BarCat extends JPanel
 
 	private String catgName;
 
-	public Panel_BarCat(String catgName, String name, SettingsPanel settingsPanel, String type)
+	public Panel_BarCat(String catgName, String name, String type)
 	{
-		this(name, settingsPanel, type);
+		this(name, type);
 		this.catgName = catgName;
 	}
 
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public Panel_BarCat(String name, SettingsPanel settingsPanel, String type)
+	public Panel_BarCat(String name, String type)
 	{
 		super();
+		
+		SettingsPanel settingsPanel = SettingsPanel.GetSettingsPanel();
+		
 		setBounds(0, 0, Constants.settingsMainWidth, Constants.settingsMainHeight);
 		setPreferredSize(new Dimension(Constants.settingsMainWidth, Constants.settingsMainHeight));
 		setBackground(Color.LIGHT_GRAY);
@@ -104,7 +107,7 @@ public class Panel_BarCat extends JPanel
 				if (btnDelete.getModel().isPressed())
 				{
 					CategoryHandler.deleteCategory(name);
-					settingsPanel.RefreshScrollPane(type);
+					settingsPanel.addScrollPane(type);
 					settingsPanel.ResetOptionsPanel();
 				}
 			}
@@ -126,7 +129,7 @@ public class Panel_BarCat extends JPanel
 					{
 						BarItemHandler.renameBarItem(catgName, name, textField_ChangeName.getText());
 					}
-					settingsPanel.RefreshScrollPane(type);
+					settingsPanel.addScrollPane(type);
 				}
 			}
 		});

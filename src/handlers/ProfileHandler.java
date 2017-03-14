@@ -46,7 +46,7 @@ public class ProfileHandler extends JSonInfoHandler
 		{
 			new File(Constants.filesPath).mkdir();
 		}
-		WriteToFile(Constants.filesPath + "/" + Constants.categoriesFile, gson.toJson(profs));
+		WriteToFile(Constants.filesPath + "/" + Constants.profileFile, gson.toJson(profs));
 	}
 
 }

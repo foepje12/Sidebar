@@ -133,7 +133,7 @@ public class ArcSelector extends JPanel
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		int[] measures =
-		{ precision, pieceAmount, radius, pieceWidth, currentDegrees };
+		{ precision, pieceAmount, radius, pieceWidth, currentDegrees, 0, 0 };
 
 		Polygon[] polyArray = CircleDrawing.GetCircle(g, measures);
 		shapes = polyArray;
@@ -142,7 +142,7 @@ public class ArcSelector extends JPanel
 		{
 			g2d.fillPolygon(polyArray[i]);
 		}
-
+		// g.drawImage(pieces[p].getIconFile(), 0, 0, null);
 		g2d.dispose();
 	}
 
@@ -162,7 +162,6 @@ public class ArcSelector extends JPanel
 	 */
 	public void RotateArc(int way)
 	{
-
 		timer = new Timer(5, new ActionListener()
 		{
 			@Override

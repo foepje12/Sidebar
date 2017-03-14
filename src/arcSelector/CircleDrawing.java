@@ -1,6 +1,5 @@
 package arcSelector;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 
@@ -10,17 +9,22 @@ public class CircleDrawing
 
 	private static int precision;
 	private static int pieceAmount;
-	private static int radius;
+	private static int pieceRadius;
 	private static int pieceWidth;
 	private static int currentDegrees;
+	private static int[] offset;
 
 	public static Polygon[] GetCircle(Graphics g, int[] measures)
 	{
+		offset = new int[2];
+
 		precision = measures[0];
 		pieceAmount = measures[1];
-		radius = measures[2];
+		pieceRadius = measures[2];
 		pieceWidth = measures[3];
 		currentDegrees = measures[4];
+		offset[0] = measures[5];
+		offset[1] = measures[6];
 
 		shapes = new Polygon[pieceAmount];
 		Polygon[] polyArray = new Polygon[pieceAmount];
@@ -35,8 +39,7 @@ public class CircleDrawing
 	private static Polygon DrawPiece(Graphics g, int p)
 	{
 		shapes[p] = new Polygon();
-		g.setColor(new Color(180, 180, 180));
-
+		
 		float[] degrees = new float[precision];
 
 		// Calculates all the degrees to be transated to Radians
@@ -49,8 +52,8 @@ public class CircleDrawing
 		// Adds the outer points of a Piece
 		for (int i = 0; i < degrees.length; i++)
 		{
-			int x = (int) getSinCos(degrees[i], radius)[0];
-			int y = (int) getSinCos(degrees[i], radius)[1];
+			int x = (int) getSinCos(degrees[i], pieceRadius)[0];
+			int y = (int) getSinCos(degrees[i], pieceRadius)[1];
 
 			shapes[p].addPoint(x, y);
 		}
@@ -58,12 +61,12 @@ public class CircleDrawing
 		// Add the inner points of a Piece
 		for (int i = degrees.length - 1; i >= 0; i--)
 		{
-			int x = (int) getSinCos(degrees[i], radius - pieceWidth)[0];
-			int y = (int) getSinCos(degrees[i], radius - pieceWidth)[1];
+
+			int x = (int) getSinCos(degrees[i], pieceRadius - pieceWidth)[0];
+			int y = (int) getSinCos(degrees[i], pieceRadius - pieceWidth)[1];
 
 			shapes[p].addPoint(x, y);
 		}
-		// g.drawImage(pieces[p].getIconFile(), 0, 0, null);
 		return shapes[p];
 	}
 
@@ -78,8 +81,8 @@ public class CircleDrawing
 	{
 		double radians = (Math.PI / 180) * degrees;
 
-		double sin = 150 + radius * Math.sin(radians);
-		double cos = 150 + radius * Math.cos(radians);
+		double sin = (pieceRadius + offset[0]) + radius * Math.sin(radians);
+		double cos = (pieceRadius + offset[1]) + radius * Math.cos(radians);
 
 		double[] sinCos =
 		{ sin, cos };

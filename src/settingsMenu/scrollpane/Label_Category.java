@@ -29,7 +29,7 @@ public class Label_Category extends BaseScrollLabel
 		if (isNew)
 		{
 			CategoryHandler.addCategory();
-			settingsPanel.RefreshScrollPane("CATEGORY");
+			settingsPanel.addScrollPane("CATEGORY");
 		}
 		else
 		{
