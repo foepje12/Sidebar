@@ -15,6 +15,6 @@ public class Button_Menu_Style extends JButton
 		setBorderPainted(false);
 		setFocusPainted(false);
 		setBackground(Color.GRAY);
-		setCursor(new Cursor(Cursor.HAND_CURSOR));
+		setCursor(new Cursor(Cursor.HAND_CURSOR));		
 	}
 }

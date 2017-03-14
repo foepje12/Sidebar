@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -19,6 +21,7 @@ public class Panel_Menu extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private int menuHeight = 25;
+	private Panel_Menu_Button activeTab;
 
 	public Panel_Menu(SettingsPanel settingsPanel)
 	{
@@ -38,7 +41,7 @@ public class Panel_Menu extends JPanel
 		add(returnButton);
 
 		setBackground(Color.GRAY);
-		
+
 		ImageIcon imageIcon = new ImageIcon(Constants.buttonIconsPath + "/leftarrow.png");
 		setLayout(new BorderLayout(0, 0));
 		JLabel lblBackButton = new JLabel(imageIcon);
@@ -46,17 +49,47 @@ public class Panel_Menu extends JPanel
 		lblBackButton.setPreferredSize(new Dimension(50, menuHeight));
 		add(lblBackButton, BorderLayout.WEST);
 
-		JPanel MenuButtons = new JPanel();
-		MenuButtons.setBackground(Color.GRAY);
-		add(MenuButtons, BorderLayout.CENTER);
+		JPanel menuButtons = new JPanel();
+		menuButtons.setBackground(Color.GRAY);
+		add(menuButtons, BorderLayout.CENTER);
 
-		JPanel panel_Profiles = new Panel_Menu_Button("Profiles");
-		JPanel panel_Categories = new Panel_Menu_Button("Categories");
+		Panel_Menu_Button panel_Profiles = new Panel_Menu_Button("Profiles");
+		panel_Profiles.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent event)
+			{
+				SetPanelMenuButtonActive(panel_Profiles);
+				SettingsPanel.GetSettingsPanel().addScrollPane("PROFILE");
+			}
+		});
+
+		Panel_Menu_Button panel_Categories = new Panel_Menu_Button("Categories");
+		panel_Categories.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent event)
+			{
+				SetPanelMenuButtonActive(panel_Categories);
+				SettingsPanel.GetSettingsPanel().addScrollPane("CATEGORY");
+			}
+		});
 
 		// Menu
 		FlowLayout fl_MenuButtons = new FlowLayout(FlowLayout.LEFT, 0, 0);
-		MenuButtons.setLayout(fl_MenuButtons);
-		MenuButtons.add(panel_Profiles);
-		MenuButtons.add(panel_Categories);
+		menuButtons.setLayout(fl_MenuButtons);
+		menuButtons.add(panel_Profiles);
+		menuButtons.add(panel_Categories);
+	}
+
+	private void SetPanelMenuButtonActive(Panel_Menu_Button panel)
+	{
+		if (activeTab != null)
+		{
+			activeTab.setActive(false);
+		}
+
+		panel.setActive(true);
+		activeTab = panel;
 	}
 }

@@ -7,12 +7,12 @@ import java.awt.Polygon;
 public class CircleDrawing
 {
 	private static Polygon[] shapes;
-	private static int currentDegrees;
 
 	private static int precision;
 	private static int pieceAmount;
 	private static int radius;
 	private static int pieceWidth;
+	private static int currentDegrees;
 
 	public static Polygon[] GetCircle(Graphics g, int[] measures)
 	{

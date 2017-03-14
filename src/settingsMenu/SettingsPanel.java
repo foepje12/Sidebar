@@ -21,6 +21,7 @@ public class SettingsPanel extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private static JFrame jframe;
+	public static SettingsPanel settingsPanel;
 
 	// The different panels in the frame
 	public JPanel panel_OptionsMenu;
@@ -33,6 +34,7 @@ public class SettingsPanel extends JFrame
 	{
 		super();
 		jframe = this;
+		settingsPanel = this;
 
 		// Setting up the frame size
 		int screenWidth = ScreenProperties.getScreenWidth();
@@ -51,7 +53,7 @@ public class SettingsPanel extends JFrame
 
 		// Adding the panels
 		addDefaultOptionsPane();
-		addScrollPane("CATEGORY");
+		addScrollPane("NULL");
 		addMenuPane();
 
 		addMouseListener(new MouseAdapter()
@@ -59,7 +61,7 @@ public class SettingsPanel extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent event)
 			{
-				if(SwingUtilities.isMiddleMouseButton(event))
+				if (SwingUtilities.isMiddleMouseButton(event))
 				{
 					SideBar.SwitchToArcSelector();
 				}
@@ -140,6 +142,17 @@ public class SettingsPanel extends JFrame
 		OpenPanelOptions(barName, "BAR_ITEM");
 	}
 
+	/**
+	 * Set the Options Panel to Profile
+	 * 
+	 * @param profName
+	 */
+	public void SetOptionsPanelProfile(String profName)
+	{
+		DeleteOptionsPanel();
+		OpenPanelOptions(profName, "PROFILE");
+	}
+
 	private void DeleteOptionsPanel()
 	{
 		if (panel_OptionsMenu != null)
@@ -193,4 +206,10 @@ public class SettingsPanel extends JFrame
 		add(panel_OptionsMenu);
 		packFrame();
 	}
+
+	public static SettingsPanel GetSettingsPanel()
+	{
+		return settingsPanel;
+	}
+
 }

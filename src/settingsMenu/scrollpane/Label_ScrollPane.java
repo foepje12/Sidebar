@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 
 import handlers.BarItemHandler;
 import handlers.CategoryHandler;
+import handlers.ProfileHandler;
 import settingsMenu.SettingsPanel;
 
 public class Label_ScrollPane extends JScrollPane
@@ -26,15 +27,33 @@ public class Label_ScrollPane extends JScrollPane
 
 		switch (type)
 		{
+		case "PROFILE":
+			addProfilesToScrollPane(panelScrollPane);
+			break;
 		case "CATEGORY":
 			addCategoriesToScrollPane(panelScrollPane);
 			break;
 		case "BAR_ITEM":
 			addBarItemToScrollPane(panelScrollPane, CategoryHandler.getCurrentCategoryName());
 			break;
+		case "NULL":
+			break;
 		}
 
 		setViewportView(panelScrollPane);
+	}
+
+	private void addProfilesToScrollPane(JPanel panel)
+	{
+		Set<String> strings = ProfileHandler.getProfileNames();
+
+		for (String profName : strings)
+		{
+			JLabel label = new Label_Profile(profName, settingsPanel);
+			panel.add(label);
+		}
+		JLabel addNewProfileLabel = new Label_Profile("Add Profile", settingsPanel, true);
+		panel.add(addNewProfileLabel);
 	}
 
 	private void addCategoriesToScrollPane(JPanel panel)

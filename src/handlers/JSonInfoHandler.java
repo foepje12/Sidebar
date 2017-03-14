@@ -7,8 +7,6 @@ import java.io.PrintWriter;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 
 import main.Constants;
 
@@ -31,26 +29,49 @@ public class JSonInfoHandler
 
 	public static Categories getCategories()
 	{
+		File file = new File(Constants.filesPath + "/" + Constants.categoriesFile);
 		try
 		{
 			Gson gson = new Gson();
-			File file = new File(Constants.filesPath + "/" + Constants.categoriesFile);
-
-			if (file.exists())
-			{
-				FileReader reader = new FileReader(file);
-
-				Categories catgs = gson.fromJson(reader, Categories.class);
-
-				return catgs;
-			}
+			FileReader reader = new FileReader(file);
+			Categories catgs = gson.fromJson(reader, Categories.class);
+			return catgs;
 		}
-		catch (JsonSyntaxException | JsonIOException | FileNotFoundException e)
+		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			FileHandler.CreateNewFile(file);
+			getCategories();
 		}
 		return null;
 	}
+
+	public static Profiles getProfiles()
+	{
+		File file = new File(Constants.filesPath + "/" + Constants.profileFile);
+
+		try
+		{
+			Gson gson = new Gson();
+			FileReader reader = new FileReader(file);
+			Profiles profs = gson.fromJson(reader, Profiles.class);
+			return profs;
+		}
+		catch (FileNotFoundException e)
+		{
+			FileHandler.CreateNewFile(file);
+		}
+		return null;
+	}
+}
+
+class Profiles
+{
+	Map<String, Profile> profileMap;
+}
+
+class Profile
+{
+	Map<String, Categories> categories;
 }
 
 class Categories
@@ -68,5 +89,4 @@ class BarItem
 {
 	String webUrl;
 	String iconPath;
-
 }

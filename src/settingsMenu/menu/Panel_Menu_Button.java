@@ -17,6 +17,7 @@ public class Panel_Menu_Button extends JPanel
 	private int menuButtonWidth = 100;
 	private int menuButtonLineHeight = 5;
 	private boolean isActive = false;
+	private JPanel panel_Profiles_Background;
 
 	public Panel_Menu_Button(String name)
 	{
@@ -25,28 +26,22 @@ public class Panel_Menu_Button extends JPanel
 		setPreferredSize(new Dimension(menuButtonWidth, 25));
 		setMaximumSize(new Dimension(menuButtonWidth, 25));
 
-		//Name label
+		// Name label
 		JLabel lblProfiles = new JLabel(name);
 		lblProfiles.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblProfiles.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProfiles.setForeground(Color.WHITE);
 		lblProfiles.setPreferredSize(new Dimension(menuButtonWidth, 20));
 		add(lblProfiles, BorderLayout.NORTH);
-		
-		//Background Color
-		JPanel panel_Profiles_Background = new JPanel();
+
+		// Background Color
+		panel_Profiles_Background = new JPanel();
 		panel_Profiles_Background.setBackground(Color.GRAY);
 		panel_Profiles_Background.setPreferredSize(new Dimension(menuButtonWidth / 2, menuButtonLineHeight));
 		add(panel_Profiles_Background, BorderLayout.SOUTH);
 
 		addMouseListener(new MouseAdapter()
 		{
-			@Override
-			public void mouseClicked(MouseEvent event)
-			{
-				setActive(true);
-			}
-			
 			@Override
 			public void mouseEntered(MouseEvent event)
 			{
@@ -56,16 +51,25 @@ public class Panel_Menu_Button extends JPanel
 			@Override
 			public void mouseExited(MouseEvent event)
 			{
-				if(!isActive)
+				if (!isActive)
 				{
 					panel_Profiles_Background.setBackground(Color.GRAY);
-				}				
+				}
 			}
 		});
 	}
-	
+
 	public void setActive(boolean active)
 	{
 		isActive = active;
+
+		if (isActive)
+		{
+			panel_Profiles_Background.setBackground(new Color(178, 41, 43));
+		}
+		else
+		{
+			panel_Profiles_Background.setBackground(Color.GRAY);
+		}
 	}
 }
