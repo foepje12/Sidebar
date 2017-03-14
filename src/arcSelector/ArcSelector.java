@@ -29,7 +29,7 @@ public class ArcSelector extends JPanel
 	private int precision;
 	private int pieceWidth;
 	private Polygon[] shapes;
-	//private Piece[] pieces;
+	// private Piece[] pieces;
 	private Timer timer;
 	private int currentDegrees;
 	private boolean isRotating;
@@ -48,7 +48,7 @@ public class ArcSelector extends JPanel
 		precision = Constants.arcPrecision;
 		pieceWidth = Constants.arcPieceWidth;
 		shapes = new Polygon[pieceAmount];
-		//pieces = new Piece[pieceAmount];
+		// pieces = new Piece[pieceAmount];
 
 		currentDegrees = 0;
 		isRotating = false;
@@ -99,7 +99,6 @@ public class ArcSelector extends JPanel
 					{
 						if (shapes[i].contains(event.getX(), event.getY()))
 						{
-
 						}
 					}
 				}
@@ -113,12 +112,6 @@ public class ArcSelector extends JPanel
 				{
 					SideBar.SwitchToSettingsPanel();
 				}
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent event)
-			{
-				System.out.println("ENTERED");
 			}
 		});
 
@@ -139,68 +132,18 @@ public class ArcSelector extends JPanel
 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		for (int p = 0; p < pieceAmount; p++)
+		int[] measures =
+		{ precision, pieceAmount, radius, pieceWidth, currentDegrees };
+
+		Polygon[] polyArray = CircleDrawing.GetCircle(g, measures);
+		shapes = polyArray;
+
+		for (int i = 0; i < polyArray.length; i++)
 		{
-			DrawPiece(g2d, p);
+			g2d.fillPolygon(polyArray[i]);
 		}
 
 		g2d.dispose();
-	}
-
-	private void DrawPiece(Graphics g, int p)
-	{
-		shapes[p] = new Polygon();
-		g.setColor(new Color(180, 180, 180));
-
-		float[] degrees = new float[precision];
-
-		// Calculates all the degrees to be transated to Radians
-		for (int i = 0; i < precision; i++)
-		{
-
-			degrees[i] = ((float) (360 / pieceAmount) / (precision - 1)) * i + (p * 360 / pieceAmount);
-			degrees[i] = degrees[i] + currentDegrees + 20;
-		}
-
-		// Adds the outer points of a Piece
-		for (int i = 0; i < degrees.length; i++)
-		{
-			int x = (int) getSinCos(degrees[i], radius)[0];
-			int y = (int) getSinCos(degrees[i], radius)[1];
-
-			shapes[p].addPoint(x, y);
-		}
-
-		// Add the inner points of a Piece
-		for (int i = degrees.length - 1; i >= 0; i--)
-		{
-			int x = (int) getSinCos(degrees[i], radius - pieceWidth)[0];
-			int y = (int) getSinCos(degrees[i], radius - pieceWidth)[1];
-
-			shapes[p].addPoint(x, y);
-		}
-		//g.drawImage(pieces[p].getIconFile(), 0, 0, null);
-		g.fillPolygon(shapes[p]);
-	}
-
-	/**
-	 * Gets the sinus and cosinus for the circle
-	 * 
-	 * @param degrees
-	 * @param radius
-	 * @return double[] sinus and cosinus
-	 */
-	private double[] getSinCos(float degrees, int radius)
-	{
-		double radians = (Math.PI / 180) * degrees;
-
-		double sin = 150 + radius * Math.sin(radians);
-		double cos = 150 + radius * Math.cos(radians);
-
-		double[] sinCos =
-		{ sin, cos };
-
-		return sinCos;
 	}
 
 	/**

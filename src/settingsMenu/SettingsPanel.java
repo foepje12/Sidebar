@@ -2,13 +2,17 @@ package settingsMenu;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import main.Constants;
 import main.ScreenProperties;
+import main.SideBar;
 import settingsMenu.menu.Panel_Menu;
 import settingsMenu.optionsMenu.Panel_BarCat;
 import settingsMenu.scrollpane.Label_ScrollPane;
@@ -49,6 +53,18 @@ public class SettingsPanel extends JFrame
 		addDefaultOptionsPane();
 		addScrollPane("CATEGORY");
 		addMenuPane();
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent event)
+			{
+				if(SwingUtilities.isMiddleMouseButton(event))
+				{
+					SideBar.SwitchToArcSelector();
+				}
+			}
+		});
 	}
 
 	/**
