@@ -14,6 +14,13 @@ public class CircleDrawing
 	private static int currentDegrees;
 	private static int[] offset;
 
+	/**
+	 * Gets all the circle segments as a polygon array
+	 * 
+	 * @param g
+	 * @param measures
+	 * @return
+	 */
 	public static Polygon[] GetCircle(Graphics g, int[] measures)
 	{
 		offset = new int[2];
@@ -36,10 +43,17 @@ public class CircleDrawing
 		return polyArray;
 	}
 
+	/**
+	 * Draws a single circle segment
+	 * 
+	 * @param g
+	 * @param p
+	 * @return
+	 */
 	private static Polygon DrawPiece(Graphics g, int p)
 	{
 		shapes[p] = new Polygon();
-		
+
 		float[] degrees = new float[precision];
 
 		// Calculates all the degrees to be transated to Radians

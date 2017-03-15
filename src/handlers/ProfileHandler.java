@@ -31,6 +31,15 @@ public class ProfileHandler extends JSonInfoHandler
 		profileMap = profs.profileMap;
 		WriteProfileToFile();
 	}
+	
+	public static void renameProfile(String oldName, String newName)
+	{		
+		Profiles profs = getProfiles();		
+		profs.profileMap.put(newName, profs.profileMap.get(oldName));
+		profs.profileMap.remove(oldName);
+		profileMap = profs.profileMap;
+		WriteProfileToFile();
+	}
 
 	public static void WriteProfileToFile()
 	{
@@ -48,5 +57,4 @@ public class ProfileHandler extends JSonInfoHandler
 		}
 		WriteToFile(Constants.filesPath + "/" + Constants.profileFile, gson.toJson(profs));
 	}
-
 }

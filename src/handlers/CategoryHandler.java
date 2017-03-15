@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -122,5 +124,20 @@ public class CategoryHandler extends JSonInfoHandler
 		categories.categoryMap.remove(name);
 		categoryMap = categories.categoryMap;
 		WriteCategoryToFile();
+	}
+
+	public static ImageIcon[] getCategoryIconArray()
+	{
+		Categories catgs = getCategories();
+		ImageIcon[] iconArray = new ImageIcon[catgs.categoryMap.size()];
+		
+		int i = 0;
+		
+		for (String string : catgs.categoryMap.keySet())
+		{
+			iconArray[i] = new ImageIcon(catgs.categoryMap.get(string).iconPath);
+			i++;
+		}
+		return iconArray;
 	}
 }

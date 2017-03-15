@@ -1,17 +1,19 @@
 package arcSelector;
 
+import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
 public class Piece
 {
-	public String[] webUrls;
-	public String iconPath;
+	private String[] webUrls;
+	private String iconPath;
+	private Color color;
 	
-	public Piece(String iconPath)
+	public Piece(Color color)
 	{
-		this.iconPath = iconPath;
+		this.color = color;
 	}
 
 	public String[] getWebUrls()
@@ -29,5 +31,22 @@ public class Piece
 		ImageIcon icon = new ImageIcon(iconPath);
 		return icon.getImage();
 	}
+
+	public void setIconPath(String iconPath)
+	{
+		this.iconPath = iconPath;
+	}
+
+	public Color getColor()
+	{
+		return color;
+	}
+
+	public void setColor(Color borderColor)
+	{
+		this.color = borderColor;
+	}
+	
+	
 
 }
