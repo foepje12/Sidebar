@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import arcSelector.CircleDrawing;
 import arcSelector.Piece;
 import main.Constants;
+import settingsMenu.SettingsPanel;
 
 public class PaintPanel extends JPanel
 {
@@ -27,9 +28,13 @@ public class PaintPanel extends JPanel
 	private Piece[] pieces;
 	private Piece currentSelectedPiece;
 
+	private Panel_Profile profilePanel;
+
 	public PaintPanel()
 	{
 		super();
+		profilePanel = Panel_Profile.profilePanel;
+
 		currentDegrees = 0;
 		radius = Constants.arcRadius;
 		pieceAmount = Constants.arcPieceAmount;
@@ -53,6 +58,8 @@ public class PaintPanel extends JPanel
 						{
 							currentSelectedPiece.setColor(new Color(180, 180, 180));
 						}
+						
+						Panel_Profile.scrollPane.AddLabels();
 
 						pieces[p].setColor(Color.RED);
 						currentSelectedPiece = pieces[p];
@@ -75,12 +82,6 @@ public class PaintPanel extends JPanel
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		// g.clearRect(getWidth() / 2 - radius, 10, radius * 2, radius * 2);
-		// g.setColor(Color.GRAY);
-		// g.fillRect(getWidth() / 2 - radius, 10, radius * 2, radius * 2);
-
-		
-
 		int[] measures =
 		{ precision, pieceAmount, radius, pieceWidth, currentDegrees, 2, 2 };
 
@@ -89,13 +90,12 @@ public class PaintPanel extends JPanel
 
 		for (int i = 0; i < polyArray.length; i++)
 		{
-
 			g2d.setColor(pieces[i].getColor());
 			g2d.fillPolygon(polyArray[i]);
 			g2d.setColor(Color.BLACK);
 			g2d.drawPolygon(polyArray[i]);
 		}
-		
+
 		g2d.dispose();
 	}
 }

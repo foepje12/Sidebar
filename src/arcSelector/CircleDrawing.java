@@ -60,7 +60,7 @@ public class CircleDrawing
 		for (int i = 0; i < precision; i++)
 		{
 			degrees[i] = ((float) (360 / pieceAmount) / (precision - 1)) * i + (p * 360 / pieceAmount);
-			degrees[i] = degrees[i] + currentDegrees + 20;
+			degrees[i] = degrees[i] + currentDegrees + 22;
 		}
 
 		// Adds the outer points of a Piece

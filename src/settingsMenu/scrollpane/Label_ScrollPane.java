@@ -62,12 +62,12 @@ public class Label_ScrollPane extends JScrollPane
 
 		for (String catgNames : strings)
 		{
-			JLabel label = new Label_Category(catgNames, settingsPanel);
+			JLabel label = new Label_Category(catgNames);
 
 			panel.add(label);
 		}
 
-		JLabel addNewCategoryLabel = new Label_Category("Add Category", settingsPanel, true);
+		JLabel addNewCategoryLabel = new Label_Category("Add Category", true);
 		panel.add(addNewCategoryLabel);
 	}
 

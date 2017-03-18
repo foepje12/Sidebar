@@ -6,20 +6,20 @@ import settingsMenu.SettingsPanel;
 public class Label_Category extends BaseScrollLabel
 {
 	private static final long serialVersionUID = 1L;
-	private SettingsPanel settingsPanel;
 	private String catgName;
 	private boolean isNew;
+	private SettingsPanel settingsPanel;
 
-	public Label_Category(String catgName, SettingsPanel settingsPanel)
+	public Label_Category(String catgName)
 	{
 		super(catgName);
 		this.catgName = catgName;
-		this.settingsPanel = settingsPanel;
+		settingsPanel = SettingsPanel.GetSettingsPanel();
 	}
 
-	public Label_Category(String catgName, SettingsPanel settingsPanel, boolean isNew)
+	public Label_Category(String catgName, boolean isNew)
 	{
-		this(catgName, settingsPanel);
+		this(catgName);
 		this.isNew = isNew;
 	}
 
