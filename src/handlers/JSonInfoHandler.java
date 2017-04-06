@@ -71,7 +71,7 @@ class Profiles
 
 class Profile
 {
-	Map<String, Categories> categories;
+	public Map<String, Category> categories;
 }
 
 class Categories

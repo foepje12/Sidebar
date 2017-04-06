@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import arcSelector.CircleDrawing;
 import arcSelector.Piece;
 import main.Constants;
-import settingsMenu.SettingsPanel;
 
 public class PaintPanel extends JPanel
 {
@@ -25,9 +24,8 @@ public class PaintPanel extends JPanel
 	private int precision;
 	private int pieceWidth;
 	private Polygon[] shapes;
-	private Piece[] pieces;
+	public static Piece[] pieces;
 	private Piece currentSelectedPiece;
-
 	private Panel_Profile profilePanel;
 
 	public PaintPanel()
@@ -58,7 +56,7 @@ public class PaintPanel extends JPanel
 						{
 							currentSelectedPiece.setColor(new Color(180, 180, 180));
 						}
-						
+
 						Panel_Profile.scrollPane.AddLabels();
 
 						pieces[p].setColor(Color.RED);
@@ -97,5 +95,10 @@ public class PaintPanel extends JPanel
 		}
 
 		g2d.dispose();
+	}
+
+	public static void SetCurrentSelectedPiece(String catgName)
+	{
+		
 	}
 }

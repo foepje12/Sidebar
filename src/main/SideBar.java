@@ -30,7 +30,6 @@ public class SideBar
 		DeleteCurrentFrame();
 		JFrame selector = new Frame_ArcSelector();
 		currentJFrame = selector;
-
 	}
 
 	public static void SwitchToBarButtons()

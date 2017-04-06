@@ -26,7 +26,7 @@ public class ProfileHandler extends JSonInfoHandler
 	{
 		Profiles profs = getProfiles();
 		Profile profile = new Profile();
-		profile.categories = new HashMap<String, Categories>();
+		profile.categories = new HashMap<String, Category>();
 		profs.profileMap.put("newProfile", profile);
 		profileMap = profs.profileMap;
 		WriteProfileToFile();

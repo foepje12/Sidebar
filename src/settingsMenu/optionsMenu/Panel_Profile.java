@@ -22,10 +22,12 @@ public class Panel_Profile extends JPanel
 
 	public static Panel_Profile profilePanel;
 	public static ArcChooseScrollPane scrollPane;
+	public static String currentProfile;
 
 	public Panel_Profile(String name)
 	{
 		profilePanel = this;
+		currentProfile = name;
 
 		setBackground(Color.GRAY);
 		setPreferredSize(new Dimension(Constants.settingsMainWidth, Constants.settingsMainHeight));
